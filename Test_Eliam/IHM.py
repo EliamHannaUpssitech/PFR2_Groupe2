@@ -1,11 +1,11 @@
 from tkinter import *
 from tkinter import ttk
+from PIL import Image, ImageTk
+from object_details import *
 
 def mainIHM():
 
     refresh()
-
-    print(langue)
 
     btn_flag = Button(IHM, command=language_change, bg=None)
     if(langue == 'FR'): img_flag = PhotoImage(file="Test_Eliam/images_IHM/fr_flag.png").subsample(4, 4)
@@ -124,7 +124,20 @@ def modeImage():
     btn_retour.config(image=img_return)
     btn_retour.place(x=25, y=25)
 
-    
+    # Images 16/9 1920x1080
+    image = "Test_Eliam/images_tests/image_1006.png"
+    img = Image.open(image).resize((747,420), Image.ANTIALIAS)
+
+    image_affichee = ImageTk.PhotoImage(img)
+    image_analysee = Label(IHM,image=image_affichee)
+    image_analysee.place(x=25, y=125)
+
+    cac = carac_obj(image)
+
+    text_image = Text(IHM, bg=None, height=6, width=100)
+    text_image.place(x=150, y=25)
+    for obj in range(cac[3]):
+        text_image.insert(str(obj+1) + ".0", "Objet " + str(obj+1) + " : " + str(cac[0][obj]) + " " + str(cac[1][obj]) + "\n")
 
     IHM.mainloop()
 
@@ -133,9 +146,6 @@ def refresh():
     for widget in IHM.winfo_children():
         widget.destroy()
 
-def cmd_test():
-    print('commande test passée')
-
 def language_change():
     global langue
     if(langue == "FR"):
@@ -143,6 +153,9 @@ def language_change():
     elif(langue == "EN"):
         langue = "FR"
     mainIHM()
+
+def cmd_test():
+    print('commande test passée')
 
 ###########################
 
