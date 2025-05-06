@@ -2,7 +2,7 @@ import serial
 import time
 
 # Ouvre le port série
-ser = serial.Serial('COM4', 9600, timeout=1)
+ser = serial.Serial('COMx', 9600, timeout=1) # COMx a modifié en fonction du port bluetooth
 time.sleep(2)  # Laisser le temps à l'Arduino de redémarrer
 
 def mesurer_distance(direction):
