@@ -97,7 +97,7 @@ def carac_obj(image):
             for c in contour[nbObjets]:
                 positionObjets.append([int(np.mean(c[0])), int(np.mean(c[1]))])
             
-            colorKernel = 30
+            colorKernel = 20
             y1 = positionObjets[nbObjets][1]-colorKernel
             if(y1 < 0):
                 y1 = 0
@@ -113,7 +113,7 @@ def carac_obj(image):
             
             roi = img_blur[y1:y2, x1:x2]
             colors = detect_color_hsv(roi)
-            colorObjets.append(colors)
+            colorObjets.append(colors[0])
             
             formeObjets.append(shape_name)
 
@@ -123,10 +123,6 @@ def carac_obj(image):
 
     print("taille image : " + str(width) + ", " + str(height))
     print([formeObjets, colorObjets, positionObjets, nbObjets])
-    print("\n\n\n\n")
-
-    cv2.imshow("IMG_" + str(i), img_color)
-    cv2.waitKey(0)
 
     # NOMBRE D'OBJETS : nbObjets
     # FORME : forme = [obj1, obj2, ...]
@@ -134,6 +130,3 @@ def carac_obj(image):
     # POSITION : positionObjets = [obj1, obj2, ...] -> objX = [posX, posY]
     return([formeObjets, colorObjets, positionObjets, nbObjets])
 
-images = list(range(0, 7))
-for i in images:
-    carac_obj("Test_Eliam/IMG_300/images tests/image_000" + str(i) + ".jpg")
