@@ -119,6 +119,9 @@ def carac_obj(image):
 
             nbObjets += 1
 
+            objet = False
+
+    print("taille image : " + str(width) + ", " + str(height))
     print([formeObjets, colorObjets, positionObjets, nbObjets])
     print("\n\n\n\n")
 
@@ -131,6 +134,6 @@ def carac_obj(image):
     # POSITION : positionObjets = [obj1, obj2, ...] -> objX = [posX, posY]
     return([formeObjets, colorObjets, positionObjets, nbObjets])
 
-images = list(range(5389, 5408 + 1))
+images = list(range(0, 7))
 for i in images:
-    carac_obj("./IMG_300/IMG_"+ str(i) +".jpeg")
+    carac_obj("Test_Eliam/IMG_300/images tests/image_000" + str(i) + ".jpg")
