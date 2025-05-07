@@ -26,7 +26,6 @@ mappings = {
 
 def boucle_manette():
     global commande_partagee, envoyer_commande, arreter
-    arreter = False
 
     pygame.init()
     pygame.joystick.init()
@@ -130,11 +129,21 @@ def commandeManuelManette():
         pygame.quit()
         print("Programme terminé.")
 """
+def reinitialiser_etat():
+    global commande_partagee, envoyer_commande, vitesse, arreter
+    commande_partagee = "x"
+    envoyer_commande = True
+    vitesse = 200
+    arreter = False
+
 def run_asyncio_loop():
     thread_manette = threading.Thread(target=boucle_manette)
     thread_manette.start()
     asyncio.run(boucle_ble())
+    thread_manette.join()
+    pygame.quit()
 
 def commandeManuelManette():
+    reinitialiser_etat()
     thread = threading.Thread(target=run_asyncio_loop)
     thread.start()
