@@ -140,7 +140,6 @@ def run_asyncio_loop():
     thread_manette = threading.Thread(target=boucle_manette)
     thread_manette.start()
     asyncio.run(boucle_ble())
-    thread_manette.join()
     pygame.quit()
 
 def commandeManuelManette():
