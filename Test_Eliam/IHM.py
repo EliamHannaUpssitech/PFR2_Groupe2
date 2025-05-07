@@ -125,7 +125,7 @@ def modeImage():
     btn_retour.place(x=25, y=25)
 
     # Images 16/9 1920x1080
-    image = "Test_Eliam/images_tests/image_1006.png"
+    image = "Test_Eliam/images_tests/image_1100.png"
     img = Image.open(image).resize((747,420), Image.ANTIALIAS)
 
     image_affichee = ImageTk.PhotoImage(img)

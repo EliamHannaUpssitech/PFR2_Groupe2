@@ -37,6 +37,9 @@ def detect_color_hsv(img_hsv):
     for color, mask in masks.items():
         if cv2.countNonZero(mask) > 100:  # seuil à ajuster
             detected.append(color)
+    
+    if not detected:
+        detected.append('Inconnue')
 
     return detected
 
@@ -94,10 +97,19 @@ def carac_obj(image):
         if(objet == True):
             x, y = approx[0][0]
             cv2.putText(img_color, shape_name, (x, y), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 1)
-            for c in contour[nbObjets]:
-                positionObjets.append([int(np.mean(c[0])), int(np.mean(c[1]))])
+            #for c in contour[nbObjets]:
+            #    positionObjets.append([int(np.mean(c[0])), int(np.mean(c[1]))])
+
+            M = cv2.moments(contour)
+            if M["m00"] != 0:
+                cx = int(M["m10"] / M["m00"])
+                cy = int(M["m01"] / M["m00"])
+            else:
+                cx, cy = 0, 0
+
+            positionObjets.append([cx, cy])
             
-            colorKernel = 20
+            colorKernel = 30
             y1 = positionObjets[nbObjets][1]-colorKernel
             if(y1 < 0):
                 y1 = 0
@@ -111,8 +123,11 @@ def carac_obj(image):
             if(x2 > width):
                 x2 = width
             
+
             roi = img_blur[y1:y2, x1:x2]
-            colors = detect_color_hsv(roi)
+            if roi.size == 0: colors = ['Inconnue']
+            else: 
+                colors = detect_color_hsv(roi)
             colorObjets.append(colors[0])
             
             formeObjets.append(shape_name)
@@ -123,10 +138,18 @@ def carac_obj(image):
 
     print("taille image : " + str(width) + ", " + str(height))
     print([formeObjets, colorObjets, positionObjets, nbObjets])
-
+    """
+    cv2.imshow("IMG_ + str(i)", img_color)
+    cv2.waitKey(0)
+    """
     # NOMBRE D'OBJETS : nbObjets
     # FORME : forme = [obj1, obj2, ...]
     # COULEUR : colorObjets = [obj1, obj2, ...] -> objX = [R, G, B]
     # POSITION : positionObjets = [obj1, obj2, ...] -> objX = [posX, posY]
     return([formeObjets, colorObjets, positionObjets, nbObjets])
-
+"""
+images = list(range(5389, 5408 + 1))
+for i in images:
+    carac_obj("Test_Eliam/IMG_300/IMG_"+ str(i) +".jpeg")
+"""
+#carac_obj("Test_Eliam/images_tests/image_1101.png")
