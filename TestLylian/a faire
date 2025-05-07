@@ -6,24 +6,15 @@ Quand tu branches ton Arduino à la Raspberry via un câble USB, il est reconnu 
 🔍 2. Vérifier le port série utilisé
 Dans le terminal de la Raspberry Pi :
 
-bash
-Copier
-Modifier
 ls /dev/ttyUSB* /dev/ttyACM*
 Tu verras par exemple :
 
-bash
-Copier
-Modifier
 /dev/ttyUSB0
 💡 Ce chemin est celui que tu utiliseras dans ton script Python.
 
 🐍 3. Lire les données envoyées par l Arduino (Python)
 Voici un petit code Python fonctionnel sur la Raspberry pour lire ce que l’Arduino envoie :
 
-python
-Copier
-Modifier
 import serial
 import time
 
@@ -45,9 +36,7 @@ finally:
 🛠️ 4. Code Arduino exemple (pour tester)
 Voici un sketch Arduino que tu peux téléverser pour tester :
 
-cpp
-Copier
-Modifier
+
 void setup() {
   Serial.begin(9600);
 }
@@ -58,28 +47,13 @@ void loop() {
   delay(1000); // Envoie toutes les secondes
 }
 🔁 Résultat côté Raspberry :
-r
-Copier
-Modifier
 📥 Reçu : AV:123.4
 📥 Reçu : AV:123.4
 📥 Reçu : AV:123.4
-Souhaites-tu ensuite que je t’aide à envoyer ces valeurs à ton PC, ou tu veux d abord tester la lecture série sur ta Pi ?
 
 
-
-
-
-
-
-Vous avez dit :
-envoie les au pc
-
-
-ChatGPT a dit :
 Très bien ! Pour envoyer les données lues depuis l Arduino vers ton PC, on va faire en sorte que la Raspberry Pi fonctionne comme un serveur HTTP, et le PC sera le client qui va récupérer ces données via une requête HTTP.
 
-🧠 Schéma global :
 Arduino → Raspberry Pi : Arduino envoie les données via le port série.
 
 Raspberry Pi → PC : Raspberry Pi expose les données via un serveur HTTP.
@@ -90,18 +64,15 @@ PC → Raspberry Pi : Le PC interroge régulièrement la Raspberry Pi pour obten
 1.1 Installer Flask
 Si tu n as pas encore installé Flask, tu peux le faire avec :
 
-bash
-Copier
-Modifier
+
 sudo apt update
 sudo apt install python3-pip
 pip3 install flask
+
 1.2 Code Flask pour Raspberry Pi
 Voici un serveur simple avec Flask qui lit les données série depuis l Arduino et les expose en HTTP :
 
-python
-Copier
-Modifier
+
 import serial
 import time
 from flask import Flask, jsonify
@@ -138,10 +109,9 @@ Lorsqu une requête GET est envoyée sur /distance, elle renvoie les données so
 Le serveur Flask écoute sur le port 5000 (accessible sur le réseau local).
 
 Lancer le serveur sur la Raspberry Pi :
-bash
-Copier
-Modifier
+
 python3 serveur.py
+
 Le serveur devrait maintenant être accessible via l IP de la Raspberry Pi, par exemple http://192.168.1.42:5000/distance.
 
 ✅ Étape 2 : Sur le PC (client HTTP pour récupérer les distances)
@@ -150,16 +120,11 @@ Sur le PC, tu peux utiliser un client HTTP (par exemple avec requests en Python)
 2.1 Installer requests
 Si tu n as pas encore requests :
 
-bash
-Copier
-Modifier
 pip install requests
+
 2.2 Code Python pour interroger la Raspberry Pi
 Voici le code sur le PC pour récupérer les distances depuis la Raspberry Pi :
 
-python
-Copier
-Modifier
 import requests
 import time
 
@@ -175,6 +140,7 @@ while True:
         print(f"❌ Erreur lors de la récupération des données : {e}")
     
     time.sleep(1)  # Demander toutes les secondes
+    
 Explication :
 Ce code envoie une requête HTTP GET à la Raspberry Pi pour récupérer les données de distance.
 
