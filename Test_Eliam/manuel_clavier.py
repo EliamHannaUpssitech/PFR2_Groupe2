@@ -70,8 +70,6 @@ def commandeManuel():
 def run_asyncio_loop():
     asyncio.run(main_manuel())
 
-def commandeManuel():
+def commandeManuelClavier():
     thread = threading.Thread(target=run_asyncio_loop)
     thread.start()
-
-commandeManuel()

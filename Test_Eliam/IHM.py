@@ -101,12 +101,12 @@ def modeManuel():
     btn_right.config(image=img_right)
     btn_right.place(x=200+xarrow, y=100+yarrow)
 
-    btn_clavier = Button(IHM, command=commandeManuel, bg=None)
+    btn_clavier = Button(IHM, command=commandeManuelClavier, bg=None)
     img_clavier = PhotoImage(file="Test_Eliam/images_IHM/clavier_button.png").subsample(4, 4)
     btn_clavier.config(image=img_clavier)
     btn_clavier.place(x=600, y=100)
 
-    btn_manette = Button(IHM, command=cmd_test, bg=None)
+    btn_manette = Button(IHM, command=commandeManuelManette, bg=None)
     img_manette = PhotoImage(file="Test_Eliam/images_IHM/manette_button.png").subsample(4, 4)
     btn_manette.config(image=img_manette)
     btn_manette.place(x=600, y=360)
