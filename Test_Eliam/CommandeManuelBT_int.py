@@ -73,3 +73,5 @@ def run_asyncio_loop():
 def commandeManuel():
     thread = threading.Thread(target=run_asyncio_loop)
     thread.start()
+
+commandeManuel()qqddzzsssssdq
