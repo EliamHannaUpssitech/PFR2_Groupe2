@@ -41,7 +41,7 @@ def mainIHM():
 
     IHM.mainloop()
 
-
+# MANUEL ------------------------------
 def modeManuel():
 
     xarrow = 100
@@ -80,8 +80,9 @@ def modeManuel():
     btn_car.place(x=600, y=230)
 
     IHM.mainloop()
-        
+##########
 
+# VOCAL ------------------------------
 def modeVocal():
 
     refresh()
@@ -100,8 +101,9 @@ def modeVocal():
     text_vocal.place(x=400, y=35)
 
     IHM.mainloop()
+##########
 
-
+# AUTOMATISME ------------------------------
 def modeAutom():
     
     refresh()
@@ -111,11 +113,42 @@ def modeAutom():
     btn_retour.config(image=img_return)
     btn_retour.place(x=25, y=25)
 
-    
+    btn_carto = Button(IHM, command=modeCarto, bg=None)
+    img_carto = PhotoImage(file="Test_Eliam/images_IHM/carto_button.png").subsample(3, 3)
+    btn_carto.config(image=img_carto)
+    btn_carto.place(x=233, y=183)
+
+    btn_trajet = Button(IHM, command=modeTrajet, bg=None)
+    img_trajet = PhotoImage(file="Test_Eliam/images_IHM/trajet_button.png").subsample(2, 2)
+    btn_trajet.config(image=img_trajet)
+    btn_trajet.place(x=533, y=183)
 
     IHM.mainloop()
 
-    
+def modeCarto():
+
+    refresh()
+
+    btn_retour = Button(IHM, command=modeAutom, bg=None)
+    img_return = PhotoImage(file="Test_Eliam/images_IHM/return_button.png").subsample(7, 7)
+    btn_retour.config(image=img_return)
+    btn_retour.place(x=25, y=25)
+
+    IHM.mainloop()
+
+def modeTrajet():
+
+    refresh()
+
+    btn_retour = Button(IHM, command=modeAutom, bg=None)
+    img_return = PhotoImage(file="Test_Eliam/images_IHM/return_button.png").subsample(7, 7)
+    btn_retour.config(image=img_return)
+    btn_retour.place(x=25, y=25)
+
+    IHM.mainloop()
+##########
+
+# IMAGE ------------------------------
 def modeImage():
     
     refresh()
@@ -141,8 +174,9 @@ def modeImage():
         text_image.insert(str(obj+1) + ".0", "Objet " + str(obj+1) + " : " + str(cac[0][obj]) + " " + str(cac[1][obj]) + "\n")
 
     IHM.mainloop()
+##########
 
-
+# OTHERS & ADDONS ------------------------------
 def refresh():
     for widget in IHM.winfo_children():
         widget.destroy()
