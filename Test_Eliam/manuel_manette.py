@@ -41,7 +41,7 @@ def boucle_manette():
 
     START_BUTTON_INDEX = 7
 
-    while not arreter:
+    while True:
         pygame.event.pump()
         boutons_actuels = set()
 
