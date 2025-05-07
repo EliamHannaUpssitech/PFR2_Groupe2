@@ -1,6 +1,7 @@
 import asyncio
 import keyboard
 from bleak import BleakClient
+import threading
 
 HM10_ADDRESS = "D8:A9:8B:C4:5F:EC"
 UART_CHAR_UUID = "0000ffe1-0000-1000-8000-00805f9b34fb"
@@ -9,7 +10,7 @@ delay = 0.1
 derniere_commande = None
 vitesse = 200  # suivi local pour affichage
 
-async def main():
+async def main_manuel():
     print(f"Connexion à {HM10_ADDRESS}...")
     async with BleakClient(HM10_ADDRESS) as client:
         if not client.is_connected:
@@ -59,9 +60,16 @@ async def main():
                     print(f"Erreur BLE : {e}")
 
             await asyncio.sleep(delay)
-
+"""
 def commandeManuel():
     try:
-        asyncio.run(main())
+        asyncio.run(main_manuel())
     except KeyboardInterrupt:
         print("\nProgramme interrompu manuellement")
+"""
+def run_asyncio_loop():
+    asyncio.run(main_manuel())
+
+def commandeManuel():
+    thread = threading.Thread(target=run_asyncio_loop)
+    thread.start()

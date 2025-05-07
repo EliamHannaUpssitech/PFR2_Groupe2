@@ -126,8 +126,8 @@ def modeImage():
     btn_retour.place(x=25, y=25)
 
     # Images 16/9 1920x1080
-    image = "Test_Eliam/images_tests/image_1100.png"
-    img = Image.open(image).resize((747,420), Image.ANTIALIAS)
+    image = "Test_Eliam/images_tests/image_1102.png"
+    img = Image.open(image).resize((747,420), Image.Resampling.LANCZOS)
 
     image_affichee = ImageTk.PhotoImage(img)
     image_analysee = Label(IHM,image=image_affichee)
@@ -135,7 +135,7 @@ def modeImage():
 
     cac = carac_obj(image)
 
-    text_image = Text(IHM, bg=None, height=6, width=100)
+    text_image = Text(IHM, bg=None, height=5, width=100)
     text_image.place(x=150, y=25)
     for obj in range(cac[3]):
         text_image.insert(str(obj+1) + ".0", "Objet " + str(obj+1) + " : " + str(cac[0][obj]) + " " + str(cac[1][obj]) + "\n")
