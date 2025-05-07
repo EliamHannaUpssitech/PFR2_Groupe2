@@ -89,10 +89,10 @@ def carac_obj(image):
             num_vertices = len(approx)
             shape_name = ""
 
-            if num_vertices < 12:                                       # Détection carré
+            if num_vertices < 8:                                       # Détection carré
                 x, y, w, h = cv2.boundingRect(approx)
                 aspect_ratio = w / float(h)
-                shape_name = "Carre" if 0.9 <= aspect_ratio <= 1.1 else "" #"Rectangle"
+                shape_name = "Carre" if 0.9 <= aspect_ratio <= 1.1 else "Rectangle"
                 objet = True
             elif len(approx) >= 12:                                     # Détection cercle
                 area = cv2.contourArea(contour)
@@ -161,4 +161,4 @@ images = list(range(5389, 5408 + 1))
 for i in images:
     carac_obj("Test_Eliam/IMG_300/IMG_"+ str(i) +".jpeg")
 """
-carac_obj("Test_Eliam/images_tests/image_1101.png")
+carac_obj("Test_Eliam/images_tests/image_1102.png")
