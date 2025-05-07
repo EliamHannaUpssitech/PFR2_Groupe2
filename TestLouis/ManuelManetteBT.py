@@ -16,7 +16,6 @@ arreter = False
 # Seuil pour les gâchettes
 TRIGGER_THRESHOLD = 0.5
 
-
 mappings = {
     0: 'a',  # A => augmenter vitesse
     2: 'x',  # X => arrêt
@@ -54,7 +53,7 @@ def boucle_manette():
         if joystick.get_axis(5) > TRIGGER_THRESHOLD:
             boutons_actuels.add('z')
 
-       # Croix directionnelle 
+        # Croix directionnelle
         hat = joystick.get_hat(0)
         if hat == (1, 0):
             boutons_actuels.add('d')  # droite
@@ -113,7 +112,7 @@ async def boucle_ble():
 
             await asyncio.sleep(0.1)
 
-def main():
+def CommandeManuelManette():
     global arreter
 
     thread_manette = threading.Thread(target=boucle_manette)
@@ -130,4 +129,4 @@ def main():
         print("Programme terminé.")
 
 if __name__ == "__main__":
-    main()
+    CommandeManuelManette()
