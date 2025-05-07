@@ -5,31 +5,40 @@ def detect_color_hsv(img_hsv):
     # Masques pour chaque couleur
     masks = {}
 
-    # Rouge = deux plages
-    lower_red1 = np.array([0, 100, 50])
-    upper_red1 = np.array([10, 255, 255])
-    lower_red2 = np.array([160, 100, 50])
-    upper_red2 = np.array([180, 255, 255])
-    mask_red = cv2.inRange(img_hsv, lower_red1, upper_red1) | cv2.inRange(img_hsv, lower_red2, upper_red2)
-
-    # Jaune
-    lower_yellow = np.array([20, 100, 50])
-    upper_yellow = np.array([30, 255, 255])
-    mask_yellow = cv2.inRange(img_hsv, lower_yellow, upper_yellow)
-
-    # Vert
-    lower_green = np.array([40, 100, 50])
-    upper_green = np.array([85, 255, 255])
-    mask_green = cv2.inRange(img_hsv, lower_green, upper_green)
-
-    # Bleu
-    lower_blue = np.array([90, 100, 50])
-    upper_blue = np.array([130, 255, 255])
-    mask_blue = cv2.inRange(img_hsv, lower_blue, upper_blue)
-
+    # ----------- ROUGE -----------
+    # Rouge clair à foncé + Orange foncé
+    lower_orange_red = np.array([0, 100, 50])
+    upper_orange_red = np.array([10, 255, 255])
+    lower_red = np.array([160, 100, 50])
+    upper_red = np.array([180, 255, 255])
+    mask_red = cv2.inRange(img_hsv, lower_orange_red, upper_orange_red) | cv2.inRange(img_hsv, lower_red, upper_red)
     masks['Rouge'] = mask_red
+
+    # ----------- ORANGE JAUNE -----------
+    # Jaune clair à foncé à orange clair
+    lower_yellow = np.array([15, 100, 50])
+    upper_yellow = np.array([25, 255, 255])
+    lower_orange = np.array([25, 100, 50])
+    upper_orange = np.array([35, 255, 255])
+    mask_yellow = cv2.inRange(img_hsv, lower_yellow, upper_yellow) | cv2.inRange(img_hsv, lower_orange, upper_orange)
     masks['Jaune'] = mask_yellow
+
+    # ----------- VERT -----------
+    # Vert clair à foncé
+    lower_light_green = np.array([36, 100, 50])
+    upper_light_green = np.array([54, 255, 255])
+    lower_dark_green = np.array([55, 100, 50])
+    upper_dark_green = np.array([85, 255, 255])
+    mask_green = cv2.inRange(img_hsv, lower_light_green, upper_light_green) | cv2.inRange(img_hsv, lower_dark_green, upper_dark_green)
     masks['Vert'] = mask_green
+
+    # ----------- BLEU -----------
+    # Cyan à bleu clair à bleu foncé
+    lower_cyan = np.array([85, 100, 50])
+    upper_cyan = np.array([94, 255, 255])
+    lower_blue = np.array([95, 100, 50])
+    upper_blue = np.array([130, 255, 255])
+    mask_blue = cv2.inRange(img_hsv, lower_cyan, upper_cyan) | cv2.inRange(img_hsv, lower_blue, upper_blue)
     masks['Bleu'] = mask_blue
 
     detected = []
@@ -71,77 +80,77 @@ def carac_obj(image):
     colorObjets = []
 
     for contour in contours:
-        epsilon = 0.005 * cv2.arcLength(contour, True)
-        approx = cv2.approxPolyDP(contour, epsilon, True)
+        if(np.shape(contour)[0] >= height/15):                          # On évite les bordures parasites
+            epsilon = 0.005 * cv2.arcLength(contour, True)
+            approx = cv2.approxPolyDP(contour, epsilon, True)
 
-        cv2.drawContours(img_color, [approx], -1, (0, 255, 0), 1)
+            cv2.drawContours(img_color, [approx], -1, (0, 255, 0), 1)
 
-        num_vertices = len(approx)
-        shape_name = ""
+            num_vertices = len(approx)
+            shape_name = ""
 
-        if num_vertices == 4:
-            x, y, w, h = cv2.boundingRect(approx)
-            aspect_ratio = w / float(h)
-            shape_name = "Carre" if 0.9 <= aspect_ratio <= 1.1 else "" #"Rectangle"
-            objet = True
-        elif len(approx) >= 12:
-            area = cv2.contourArea(contour)
-            perimeter = cv2.arcLength(contour, True)
-            circularity = (4 * np.pi * area) / (perimeter ** 2)
-            if 0.55 <= circularity <= 1.45:
-                shape_name = "Cercle"
+            if num_vertices < 12:                                       # Détection carré
+                x, y, w, h = cv2.boundingRect(approx)
+                aspect_ratio = w / float(h)
+                shape_name = "Carre" if 0.9 <= aspect_ratio <= 1.1 else "" #"Rectangle"
                 objet = True
-        else:
-            objet = False
-
-        if(objet == True):
-            x, y = approx[0][0]
-            cv2.putText(img_color, shape_name, (x, y), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 1)
-            #for c in contour[nbObjets]:
-            #    positionObjets.append([int(np.mean(c[0])), int(np.mean(c[1]))])
-
-            M = cv2.moments(contour)
-            if M["m00"] != 0:
-                cx = int(M["m10"] / M["m00"])
-                cy = int(M["m01"] / M["m00"])
+            elif len(approx) >= 12:                                     # Détection cercle
+                area = cv2.contourArea(contour)
+                perimeter = cv2.arcLength(contour, True)
+                circularity = (4 * np.pi * area) / (perimeter ** 2)
+                if 0.55 <= circularity <= 1.45:
+                    shape_name = "Cercle"
+                    objet = True
             else:
-                cx, cy = 0, 0
+                objet = False
 
-            positionObjets.append([cx, cy])
-            
-            colorKernel = 30
-            y1 = positionObjets[nbObjets][1]-colorKernel
-            if(y1 < 0):
-                y1 = 0
-            y2 = positionObjets[nbObjets][1]+colorKernel
-            if(y2 > height):
-                y2 = height
-            x1 = positionObjets[nbObjets][0]-colorKernel
-            if(x1 < 0):
-                x1 = 0
-            x2 = positionObjets[nbObjets][0]+colorKernel
-            if(x2 > width):
-                x2 = width
-            
+            if(objet == True):
+                x, y = approx[0][0]
+                cv2.putText(img_color, shape_name, (x, y), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 0, 0), 1)
 
-            roi = img_blur[y1:y2, x1:x2]
-            if roi.size == 0: colors = ['Inconnue']
-            else: 
-                colors = detect_color_hsv(roi)
-            colorObjets.append(colors[0])
-            
-            formeObjets.append(shape_name)
+                # POSITION DANS L'IMAGE : détecte selon les bordures le centre de position des objets
+                M = cv2.moments(contour)
+                if M["m00"] != 0:
+                    cx = int(M["m10"] / M["m00"])
+                    cy = int(M["m01"] / M["m00"])
+                else:
+                    cx, cy = 0, 0
+                positionObjets.append([cx, cy])
+                ###
+                # COULEUR : moyenne de la couleur (R,G,B) à partir du centre de l'objet
+                colorKernel = 30
+                y1 = positionObjets[nbObjets][1]-colorKernel
+                if(y1 < 0):
+                    y1 = 0
+                y2 = positionObjets[nbObjets][1]+colorKernel
+                if(y2 > height):
+                    y2 = height
+                x1 = positionObjets[nbObjets][0]-colorKernel
+                if(x1 < 0):
+                    x1 = 0
+                x2 = positionObjets[nbObjets][0]+colorKernel
+                if(x2 > width):
+                    x2 = width
+                roi = img_blur[y1:y2, x1:x2]
+                if roi.size == 0: colors = ['Inconnue']
+                else: 
+                    colors = detect_color_hsv(roi)
+                colorObjets.append(colors[0])
+                ###
+                # FORME
+                formeObjets.append(shape_name)
+                ###
+                # NOMBRE OBJETS PRESENTS : Ajout puis reset la présence pour le prochain contour
+                nbObjets += 1
+                objet = False
+                ###
 
-            nbObjets += 1
-
-            objet = False
-
-    print("taille image : " + str(width) + ", " + str(height))
+    print("taille image : " + str(height) + ", " + str(width))
     print([formeObjets, colorObjets, positionObjets, nbObjets])
-    """
+    #"""
     cv2.imshow("IMG_ + str(i)", img_color)
     cv2.waitKey(0)
-    """
+    #"""
     # NOMBRE D'OBJETS : nbObjets
     # FORME : forme = [obj1, obj2, ...]
     # COULEUR : colorObjets = [obj1, obj2, ...] -> objX = [R, G, B]
@@ -152,4 +161,4 @@ images = list(range(5389, 5408 + 1))
 for i in images:
     carac_obj("Test_Eliam/IMG_300/IMG_"+ str(i) +".jpeg")
 """
-#carac_obj("Test_Eliam/images_tests/image_1101.png")
+carac_obj("Test_Eliam/images_tests/image_1101.png")
