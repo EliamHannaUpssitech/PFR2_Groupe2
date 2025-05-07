@@ -33,12 +33,20 @@ def detect_color_hsv(img_hsv):
     masks['Vert'] = mask_green
 
     # ----------- BLEU -----------
-    # Cyan à bleu clair à bleu foncé
-    lower_cyan = np.array([85, 100, 50])
-    upper_cyan = np.array([94, 255, 255])
-    lower_blue = np.array([95, 100, 50])
-    upper_blue = np.array([130, 255, 255])
-    mask_blue = cv2.inRange(img_hsv, lower_cyan, upper_cyan) | cv2.inRange(img_hsv, lower_blue, upper_blue)
+    # Bleu très clair à bleu foncé (incluant cyan)
+    lower_very_light_blue = np.array([80, 10, 180])
+    upper_very_light_blue = np.array([100, 80, 255])
+    lower_cyan = np.array([80, 100, 100])
+    upper_cyan = np.array([95, 255, 255])
+    lower_mid_blue = np.array([95, 100, 50])
+    upper_mid_blue = np.array([115, 255, 255])
+    lower_dark_blue = np.array([115, 100, 30])
+    upper_dark_blue = np.array([130, 255, 180])
+    mask_blue = (
+        cv2.inRange(img_hsv, lower_very_light_blue, upper_very_light_blue) |
+        cv2.inRange(img_hsv, lower_cyan, upper_cyan) |
+        cv2.inRange(img_hsv, lower_mid_blue, upper_mid_blue) |
+        cv2.inRange(img_hsv, lower_dark_blue, upper_dark_blue))
     masks['Bleu'] = mask_blue
 
     detected = []
@@ -147,10 +155,10 @@ def carac_obj(image):
 
     print("taille image : " + str(height) + ", " + str(width))
     print([formeObjets, colorObjets, positionObjets, nbObjets])
-    #"""
+    """
     cv2.imshow("IMG_ + str(i)", img_color)
     cv2.waitKey(0)
-    #"""
+    """
     # NOMBRE D'OBJETS : nbObjets
     # FORME : forme = [obj1, obj2, ...]
     # COULEUR : colorObjets = [obj1, obj2, ...] -> objX = [R, G, B]
@@ -161,4 +169,4 @@ images = list(range(5389, 5408 + 1))
 for i in images:
     carac_obj("Test_Eliam/IMG_300/IMG_"+ str(i) +".jpeg")
 """
-carac_obj("Test_Eliam/images_tests/image_1102.png")
+#carac_obj("Test_Eliam/images_tests/image_1102.png")
