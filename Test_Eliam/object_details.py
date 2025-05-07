@@ -89,7 +89,7 @@ def carac_obj(image):
             num_vertices = len(approx)
             shape_name = ""
 
-            if num_vertices < 8:                                       # Détection carré
+            if num_vertices < 8:                                        # Détection carré
                 x, y, w, h = cv2.boundingRect(approx)
                 aspect_ratio = w / float(h)
                 shape_name = "Carre" if 0.9 <= aspect_ratio <= 1.1 else "Rectangle"
