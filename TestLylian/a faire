@@ -1,0 +1,163 @@
+Oui bien sûr ! Sur la Raspberry Pi, lire les données d une Arduino connectée en USB est très simple. L Arduino se comporte comme un périphérique série (TTY) une fois branché.
+
+✅ 1. Connexion de l Arduino à la Raspberry Pi (via USB)
+Quand tu branches ton Arduino à la Raspberry via un câble USB, il est reconnu comme un port série (typiquement /dev/ttyUSB0 ou /dev/ttyACM0).
+
+🔍 2. Vérifier le port série utilisé
+Dans le terminal de la Raspberry Pi :
+
+ls /dev/ttyUSB* /dev/ttyACM*
+Tu verras par exemple :
+
+/dev/ttyUSB0
+💡 Ce chemin est celui que tu utiliseras dans ton script Python.
+
+🐍 3. Lire les données envoyées par l Arduino (Python)
+Voici un petit code Python fonctionnel sur la Raspberry pour lire ce que l’Arduino envoie :
+
+import serial
+import time
+
+# Adapter le port si nécessaire
+arduino = serial.Serial('/dev/ttyUSB0', 9600, timeout=1)
+time.sleep(2)  # Attendre que la connexion soit prête
+
+print("📡 Lecture en cours depuis l'Arduino...")
+
+try:
+    while True:
+        ligne = arduino.readline().decode().strip()
+        if ligne:
+            print(f"📥 Reçu : {ligne}")
+except KeyboardInterrupt:
+    print("🛑 Fin de lecture.")
+finally:
+    arduino.close()
+🛠️ 4. Code Arduino exemple (pour tester)
+Voici un sketch Arduino que tu peux téléverser pour tester :
+
+
+void setup() {
+  Serial.begin(9600);
+}
+
+void loop() {
+  float distance = 123.4; // Exemple de valeur
+  Serial.println("AV:" + String(distance));
+  delay(1000); // Envoie toutes les secondes
+}
+🔁 Résultat côté Raspberry :
+📥 Reçu : AV:123.4
+📥 Reçu : AV:123.4
+📥 Reçu : AV:123.4
+
+
+Très bien ! Pour envoyer les données lues depuis l Arduino vers ton PC, on va faire en sorte que la Raspberry Pi fonctionne comme un serveur HTTP, et le PC sera le client qui va récupérer ces données via une requête HTTP.
+
+Arduino → Raspberry Pi : Arduino envoie les données via le port série.
+
+Raspberry Pi → PC : Raspberry Pi expose les données via un serveur HTTP.
+
+PC → Raspberry Pi : Le PC interroge régulièrement la Raspberry Pi pour obtenir les distances.
+
+✅ Étape 1 : Sur la Raspberry Pi (serveur HTTP avec Flask)
+1.1 Installer Flask
+Si tu n as pas encore installé Flask, tu peux le faire avec :
+
+
+sudo apt update
+sudo apt install python3-pip
+pip3 install flask
+
+1.2 Code Flask pour Raspberry Pi
+Voici un serveur simple avec Flask qui lit les données série depuis l Arduino et les expose en HTTP :
+
+
+import serial
+import time
+from flask import Flask, jsonify
+
+app = Flask(__name__)
+
+# Connecter l'Arduino au port série
+arduino = serial.Serial('/dev/ttyUSB0', 9600, timeout=1)
+time.sleep(2)  # Attendre la connexion
+
+# Fonction pour récupérer les données de l'Arduino
+def get_distance():
+    try:
+        line = arduino.readline().decode().strip()
+        if line:
+            capteur, valeur = line.split(":")
+            return {capteur: float(valeur)}
+        return {"error": "Aucune donnée reçue"}
+    except:
+        return {"error": "Erreur de lecture"}
+
+@app.route("/distance", methods=["GET"])
+def distance():
+    data = get_distance()
+    return jsonify(data)
+
+if __name__ == "__main__":
+    app.run(host='0.0.0.0', port=5000)  # Serveur accessible depuis le réseau
+Explication :
+La Raspberry Pi lit les données série depuis l Arduino (/dev/ttyUSB0).
+
+Lorsqu une requête GET est envoyée sur /distance, elle renvoie les données sous forme de JSON.
+
+Le serveur Flask écoute sur le port 5000 (accessible sur le réseau local).
+
+Lancer le serveur sur la Raspberry Pi :
+
+python3 serveur.py
+
+Le serveur devrait maintenant être accessible via l IP de la Raspberry Pi, par exemple http://192.168.1.42:5000/distance.
+
+✅ Étape 2 : Sur le PC (client HTTP pour récupérer les distances)
+Sur le PC, tu peux utiliser un client HTTP (par exemple avec requests en Python) pour interroger la Raspberry Pi et récupérer les données des capteurs.
+
+2.1 Installer requests
+Si tu n as pas encore requests :
+
+pip install requests
+
+2.2 Code Python pour interroger la Raspberry Pi
+Voici le code sur le PC pour récupérer les distances depuis la Raspberry Pi :
+
+import requests
+import time
+
+# Adresse IP de la Raspberry Pi et port du serveur
+rasp_ip = "http://192.168.1.42:5000/distance"  # Changez l'IP si nécessaire
+
+while True:
+    try:
+        response = requests.get(rasp_ip)
+        data = response.json()
+        print(f"📦 Donnée reçue : {data}")
+    except Exception as e:
+        print(f"❌ Erreur lors de la récupération des données : {e}")
+    
+    time.sleep(1)  # Demander toutes les secondes
+    
+Explication :
+Ce code envoie une requête HTTP GET à la Raspberry Pi pour récupérer les données de distance.
+
+Si tout va bien, il affiche la distance reçue.
+
+Il répète cette action toutes les secondes.
+
+🛠️ Tester l ensemble :
+Lancer le serveur sur la Raspberry Pi : python3 serveur.py
+
+Lancer le client sur le PC : python3 client.py
+
+Si tout est correctement configuré, tu devrais voir les distances des capteurs s afficher toutes les secondes sur ton PC.
+
+🔄 Résumé du fonctionnement :
+Arduino → Raspberry Pi : Arduino envoie les distances via série (port USB).
+
+Raspberry Pi → PC : Raspberry Pi expose les données via un serveur HTTP Flask.
+
+PC → Raspberry Pi : Le PC envoie des requêtes HTTP pour récupérer les distances.
