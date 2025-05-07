@@ -25,7 +25,7 @@ async def main_manuel():
                 print("Arrêt demandé (espace pressée)")
                 await client.write_gatt_char(UART_CHAR_UUID, ('m\n').encode())
                 await client.write_gatt_char(UART_CHAR_UUID, ('x\n').encode())
-                break
+                exit
 
             commande = 'x'  # Commande par défaut
 
