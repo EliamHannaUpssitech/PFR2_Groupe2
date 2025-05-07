@@ -49,6 +49,12 @@ def boucle_manette():
         for btn_index, cmd in mappings.items():
             if joystick.get_button(btn_index):
                 boutons_actuels.add(cmd)
+        
+        # Détection du bouton Start
+        if joystick.get_button(START_BUTTON_INDEX):
+            print("Bouton Start détecté. Arrêt du programme.")
+            arreter = True
+            break
 
         # Gâchette (axe 5)
         if joystick.get_axis(5) > TRIGGER_THRESHOLD:
@@ -69,12 +75,6 @@ def boucle_manette():
             if commande_partagee != 'x':
                 commande_partagee = 'x'
                 envoyer_commande = True
-
-        # Détection du bouton Start
-        if joystick.get_button(START_BUTTON_INDEX):
-            print("Bouton Start détecté. Arrêt du programme.")
-            arreter = True
-            break
 
         time.sleep(0.05)
 
