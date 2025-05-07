@@ -2,6 +2,7 @@ from tkinter import *
 from tkinter import ttk
 from PIL import Image, ImageTk
 from object_details import *
+from CommandeManuelBT_int import *
 
 def mainIHM():
 
@@ -73,7 +74,7 @@ def modeManuel():
     btn_right.config(image=img_right)
     btn_right.place(x=200+xarrow, y=100+yarrow)
 
-    btn_car = Button(IHM, command=cmd_test, bg=None)
+    btn_car = Button(IHM, command=commandeManuel, bg=None)
     img_car = PhotoImage(file="Test_Eliam/images_IHM/car_button.png").subsample(7, 7)
     btn_car.config(image=img_car)
     btn_car.place(x=600, y=230)
