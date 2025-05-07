@@ -112,6 +112,7 @@ async def boucle_ble():
 
             await asyncio.sleep(0.1)
 
+"""
 def commandeManuelManette():
     global arreter
 
@@ -127,3 +128,12 @@ def commandeManuelManette():
         thread_manette.join()
         pygame.quit()
         print("Programme terminé.")
+"""
+def run_asyncio_loop():
+    thread_manette = threading.Thread(target=boucle_manette)
+    thread_manette.start()
+    asyncio.run(boucle_ble())
+
+def commandeManuelManette():
+    thread = threading.Thread(target=run_asyncio_loop)
+    thread.start()

@@ -13,8 +13,8 @@ def mainIHM():
     text_name.place(x=350, y=45)
 
     btn_flag = Button(IHM, command=language_change, bg=None)
-    if(langue == 'FR'): img_flag = PhotoImage(file="Test_Eliam/images_IHM/fr_flag.png").subsample(4, 4)
-    if(langue == 'EN'): img_flag = PhotoImage(file="Test_Eliam/images_IHM/us_flag.png").subsample(4, 4)
+    if(langue == 'FR'): img_flag = PhotoImage(file=str(path_img) + "fr_flag.png").subsample(4, 4)
+    if(langue == 'EN'): img_flag = PhotoImage(file=str(path_img) + "us_flag.png").subsample(4, 4)
     btn_flag.config(image=img_flag)
     btn_flag.place(x=775, y=25)
     if(langue=='FR'):   text_langue = Label(IHM, text="Changer la\nlangue")
@@ -22,7 +22,7 @@ def mainIHM():
     text_langue.place(x=777, y=97)
 
     btn_power = Button(IHM, command=exit, bg=None)
-    img_power = PhotoImage(file="Test_Eliam/images_IHM/power_button.png").subsample(7, 7)
+    img_power = PhotoImage(file=str(path_img) + "power_button.png").subsample(7, 7)
     btn_power.config(image=img_power)
     btn_power.place(x=25, y=25)
     if(langue=='FR'):   text_power = Label(IHM, text="Eteindre le\nprogramme")
@@ -30,7 +30,7 @@ def mainIHM():
     text_power.place(x=29, y=105)
 
     btn_manuel = Button(IHM, command=modeManuel, bg=None)
-    img_manuel = PhotoImage(file="Test_Eliam/images_IHM/M_button.png").subsample(4, 4)
+    img_manuel = PhotoImage(file=str(path_img) + "M_button.png").subsample(4, 4)
     btn_manuel.config(image=img_manuel)
     btn_manuel.place(x=233, y=183)
     if(langue=='FR'):   text_manuel = Label(IHM, text="Mode Manuel")
@@ -38,7 +38,7 @@ def mainIHM():
     text_manuel.place(x=263, y=163)
 
     btn_vocal = Button(IHM, command=modeVocal, bg=None)
-    img_vocal = PhotoImage(file="Test_Eliam/images_IHM/V_button.png").subsample(4, 4)
+    img_vocal = PhotoImage(file=str(path_img) + "V_button.png").subsample(4, 4)
     btn_vocal.config(image=img_vocal)
     btn_vocal.place(x=233, y=383)
     if(langue=='FR'):   text_vocal = Label(IHM, text="Mode Vocal")
@@ -46,7 +46,7 @@ def mainIHM():
     text_vocal.place(x=268, y=363)
 
     btn_autom = Button(IHM, command=modeAutom, bg=None)
-    img_autom = PhotoImage(file="Test_Eliam/images_IHM/A_button.png").subsample(4, 4)
+    img_autom = PhotoImage(file=str(path_img) + "A_button.png").subsample(4, 4)
     btn_autom.config(image=img_autom)
     btn_autom.place(x=533, y=183)
     if(langue=='FR'):   text_vocal = Label(IHM, text="Mode Automatisme")
@@ -54,7 +54,7 @@ def mainIHM():
     text_vocal.place(x=547, y=163)
 
     btn_image = Button(IHM, command=modeImage, bg=None)
-    img_image = PhotoImage(file="Test_Eliam/images_IHM/I_button.png").subsample(4, 4)
+    img_image = PhotoImage(file=str(path_img) + "I_button.png").subsample(4, 4)
     btn_image.config(image=img_image)
     btn_image.place(x=533, y=383)
     if(langue=='FR'):   text_vocal = Label(IHM, text="Mode Image")
@@ -72,42 +72,42 @@ def modeManuel():
     refresh()
 
     btn_retour = Button(IHM, command=mainIHM, bg=None)
-    img_return = PhotoImage(file="Test_Eliam/images_IHM/return_button.png").subsample(7, 7)
+    img_return = PhotoImage(file=str(path_img) + "return_button.png").subsample(7, 7)
     btn_retour.config(image=img_return)
     btn_retour.place(x=25, y=25)
 
     btn_car = Button(IHM, command=cmd_test, bg=None)
-    img_car = PhotoImage(file="Test_Eliam/images_IHM/car_button.png").subsample(8, 8)
+    img_car = PhotoImage(file=str(path_img) + "car_button.png").subsample(8, 8)
     btn_car.config(image=img_car)
     btn_car.place(x=87+xarrow, y=-170+yarrow)
 
     btn_up = Button(IHM, command=cmd_test, bg=None)
-    img_up = PhotoImage(file="Test_Eliam/images_IHM/Up_button.png").subsample(5, 5)
+    img_up = PhotoImage(file=str(path_img) + "Up_button.png").subsample(5, 5)
     btn_up.config(image=img_up)
     btn_up.place(x=100+xarrow, y=0+yarrow)
 
     btn_down = Button(IHM, command=cmd_test, bg=None)
-    img_down = PhotoImage(file="Test_Eliam/images_IHM/Down_button.png").subsample(5, 5)
+    img_down = PhotoImage(file=str(path_img) + "Down_button.png").subsample(5, 5)
     btn_down.config(image=img_down)
     btn_down.place(x=100+xarrow, y=200+yarrow)
 
     btn_left = Button(IHM, command=cmd_test, bg=None)
-    img_left = PhotoImage(file="Test_Eliam/images_IHM/Left_button.png").subsample(5, 5)
+    img_left = PhotoImage(file=str(path_img) + "Left_button.png").subsample(5, 5)
     btn_left.config(image=img_left)
     btn_left.place(x=0+xarrow, y=100+yarrow)
 
     btn_right = Button(IHM, command=cmd_test, bg=None)
-    img_right = PhotoImage(file="Test_Eliam/images_IHM/Right_button.png").subsample(5, 5)
+    img_right = PhotoImage(file=str(path_img) + "Right_button.png").subsample(5, 5)
     btn_right.config(image=img_right)
     btn_right.place(x=200+xarrow, y=100+yarrow)
 
     btn_clavier = Button(IHM, command=commandeManuelClavier, bg=None)
-    img_clavier = PhotoImage(file="Test_Eliam/images_IHM/clavier_button.png").subsample(4, 4)
+    img_clavier = PhotoImage(file=str(path_img) + "clavier_button.png").subsample(4, 4)
     btn_clavier.config(image=img_clavier)
     btn_clavier.place(x=600, y=100)
 
     btn_manette = Button(IHM, command=commandeManuelManette, bg=None)
-    img_manette = PhotoImage(file="Test_Eliam/images_IHM/manette_button.png").subsample(4, 4)
+    img_manette = PhotoImage(file=str(path_img) + "manette_button.png").subsample(4, 4)
     btn_manette.config(image=img_manette)
     btn_manette.place(x=600, y=360)
 
@@ -120,12 +120,12 @@ def modeVocal():
     refresh()
 
     btn_retour = Button(IHM, command=mainIHM, bg=None)
-    img_return = PhotoImage(file="Test_Eliam/images_IHM/return_button.png").subsample(7, 7)
+    img_return = PhotoImage(file=str(path_img) + "return_button.png").subsample(7, 7)
     btn_retour.config(image=img_return)
     btn_retour.place(x=25, y=25)
 
     btn_micro = Button(IHM, command=cmd_test, bg=None)
-    img_micro = PhotoImage(file="Test_Eliam/images_IHM/Micro_button.png").subsample(7, 7)
+    img_micro = PhotoImage(file=str(path_img) + "Micro_button.png").subsample(7, 7)
     btn_micro.config(image=img_micro)
     btn_micro.place(x=150, y=250)
 
@@ -142,17 +142,17 @@ def modeAutom():
     refresh()
 
     btn_retour = Button(IHM, command=mainIHM, bg=None)
-    img_return = PhotoImage(file="Test_Eliam/images_IHM/return_button.png").subsample(7, 7)
+    img_return = PhotoImage(file=str(path_img) + "return_button.png").subsample(7, 7)
     btn_retour.config(image=img_return)
     btn_retour.place(x=25, y=25)
 
     btn_carto = Button(IHM, command=modeCarto, bg=None)
-    img_carto = PhotoImage(file="Test_Eliam/images_IHM/carto_button.png").subsample(3, 3)
+    img_carto = PhotoImage(file=str(path_img) + "carto_button.png").subsample(3, 3)
     btn_carto.config(image=img_carto)
     btn_carto.place(x=183, y=186)
 
     btn_trajet = Button(IHM, command=modeTrajet, bg=None)
-    img_trajet = PhotoImage(file="Test_Eliam/images_IHM/trajet_button.png").subsample(2, 2)
+    img_trajet = PhotoImage(file=str(path_img) + "trajet_button.png").subsample(2, 2)
     btn_trajet.config(image=img_trajet)
     btn_trajet.place(x=533, y=180)
 
@@ -163,7 +163,7 @@ def modeCarto():
     refresh()
 
     btn_retour = Button(IHM, command=modeAutom, bg=None)
-    img_return = PhotoImage(file="Test_Eliam/images_IHM/return_button.png").subsample(7, 7)
+    img_return = PhotoImage(file=str(path_img) + "return_button.png").subsample(7, 7)
     btn_retour.config(image=img_return)
     btn_retour.place(x=25, y=25)
 
@@ -174,7 +174,7 @@ def modeTrajet():
     refresh()
 
     btn_retour = Button(IHM, command=modeAutom, bg=None)
-    img_return = PhotoImage(file="Test_Eliam/images_IHM/return_button.png").subsample(7, 7)
+    img_return = PhotoImage(file=str(path_img) + "return_button.png").subsample(7, 7)
     btn_retour.config(image=img_return)
     btn_retour.place(x=25, y=25)
 
@@ -187,7 +187,7 @@ def modeImage():
     refresh()
 
     btn_retour = Button(IHM, command=mainIHM, bg=None)
-    img_return = PhotoImage(file="Test_Eliam/images_IHM/return_button.png").subsample(7, 7)
+    img_return = PhotoImage(file=str(path_img) + "return_button.png").subsample(7, 7)
     btn_retour.config(image=img_return)
     btn_retour.place(x=25, y=25)
 
@@ -230,6 +230,7 @@ def cmd_test():
 
 # Variables Globales Obligatoires
 langue = "FR"
+path_img = "Test_Eliam/images_IHM/"
 
 # Début du programme
 IHM = Tk()
