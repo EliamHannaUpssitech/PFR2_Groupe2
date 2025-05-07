@@ -26,6 +26,7 @@ mappings = {
 
 def boucle_manette():
     global commande_partagee, envoyer_commande, arreter
+    arreter = False
 
     pygame.init()
     pygame.joystick.init()
