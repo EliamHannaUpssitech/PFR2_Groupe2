@@ -74,10 +74,15 @@ def modeManuel():
     btn_right.config(image=img_right)
     btn_right.place(x=200+xarrow, y=100+yarrow)
 
-    btn_car = Button(IHM, command=commandeManuel, bg=None)
-    img_car = PhotoImage(file="Test_Eliam/images_IHM/car_button.png").subsample(7, 7)
-    btn_car.config(image=img_car)
-    btn_car.place(x=600, y=230)
+    btn_clavier = Button(IHM, command=commandeManuel, bg=None)
+    img_clavier = PhotoImage(file="Test_Eliam/images_IHM/clavier_button.png").subsample(4, 4)
+    btn_clavier.config(image=img_clavier)
+    btn_clavier.place(x=600, y=130)
+
+    btn_manette = Button(IHM, command=cmd_test, bg=None)
+    img_manette = PhotoImage(file="Test_Eliam/images_IHM/manette_button.png").subsample(4, 4)
+    btn_manette.config(image=img_manette)
+    btn_manette.place(x=600, y=330)
 
     IHM.mainloop()
 ##########
