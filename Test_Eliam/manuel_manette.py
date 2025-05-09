@@ -41,7 +41,7 @@ def boucle_manette():
 
     START_BUTTON_INDEX = 7
 
-    while True:
+    while not arreter:
         pygame.event.pump()
         boutons_actuels = set()
 
@@ -105,6 +105,8 @@ async def boucle_ble():
                         print(f"[Repos] => x")
                     else:
                         print(f"[Commande] => {cmd}")
+                    
+                    envoyer_commande = True
 
                 except Exception as e:
                     print(f"Erreur BLE : {e}")
@@ -137,9 +139,12 @@ def reinitialiser_etat():
     arreter = False
 
 def run_asyncio_loop():
+    global arreter
     thread_manette = threading.Thread(target=boucle_manette)
     thread_manette.start()
     asyncio.run(boucle_ble())
+    arreter = True
+    thread_manette.join()
     pygame.quit()
 
 def commandeManuelManette():
