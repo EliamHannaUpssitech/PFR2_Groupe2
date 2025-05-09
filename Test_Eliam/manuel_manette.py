@@ -75,6 +75,8 @@ def boucle_manette():
                 commande_partagee = 'x'
                 envoyer_commande = True
 
+        envoyer_commande = True
+
         time.sleep(0.05)
 
 
@@ -88,7 +90,7 @@ async def boucle_ble():
             return
         print("Connecté au module HM-10")
 
-        while not arreter:
+        while True:
             if envoyer_commande:
                 try:
                     cmd = commande_partagee
@@ -105,8 +107,6 @@ async def boucle_ble():
                         print(f"[Repos] => x")
                     else:
                         print(f"[Commande] => {cmd}")
-                    
-                    envoyer_commande = True
 
                 except Exception as e:
                     print(f"Erreur BLE : {e}")
