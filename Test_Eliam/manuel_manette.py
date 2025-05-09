@@ -114,23 +114,6 @@ async def boucle_ble():
 
             await asyncio.sleep(0.1)
 
-"""
-def commandeManuelManette():
-    global arreter
-
-    thread_manette = threading.Thread(target=boucle_manette)
-    thread_manette.start()
-
-    try:
-        asyncio.run(boucle_ble())
-    except KeyboardInterrupt:
-        print("\nArrêt manuel")
-    finally:
-        arreter = True
-        thread_manette.join()
-        pygame.quit()
-        print("Programme terminé.")
-"""
 def reinitialiser_etat():
     global commande_partagee, envoyer_commande, vitesse, arreter
     commande_partagee = "x"
