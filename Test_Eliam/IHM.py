@@ -29,6 +29,14 @@ def mainIHM():
     elif(langue=='EN'): text_power = Label(IHM, text="Switch off\nthe program")
     text_power.place(x=29, y=105)
 
+    btn_qm = Button(IHM, command=help_cmd, bg=None)
+    img_qm = PhotoImage(file=str(path_img) + "qm_button.png").subsample(19, 19)
+    btn_qm.config(image=img_qm)
+    btn_qm.place(x=845, y=525)
+    if(langue=='FR'):   text_qm = Label(IHM, text="Aide ?")
+    elif(langue=='EN'): text_qm = Label(IHM, text="Help ?")
+    text_qm.place(x=848, y=505)
+
     btn_manuel = Button(IHM, command=modeManuel, bg=None)
     img_manuel = PhotoImage(file=str(path_img) + "M_button.png").subsample(4, 4)
     btn_manuel.config(image=img_manuel)
@@ -222,6 +230,17 @@ def language_change():
     elif(langue == "EN"):
         langue = "FR"
     mainIHM()
+
+def help_cmd():
+
+    refresh()
+
+    btn_retour = Button(IHM, command=mainIHM, bg=None)
+    img_return = PhotoImage(file=str(path_img) + "return_button.png").subsample(7, 7)
+    btn_retour.config(image=img_return)
+    btn_retour.place(x=25, y=25)
+
+    IHM.mainloop()
 
 def cmd_test():
     print('commande test passée')
