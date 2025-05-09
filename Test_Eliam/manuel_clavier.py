@@ -60,13 +60,7 @@ async def main_manuel():
                     print(f"Erreur BLE : {e}")
 
             await asyncio.sleep(delay)
-"""
-def commandeManuel():
-    try:
-        asyncio.run(main_manuel())
-    except KeyboardInterrupt:
-        print("\nProgramme interrompu manuellement")
-"""
+
 def run_asyncio_loop():
     asyncio.run(main_manuel())
 
