@@ -3,7 +3,7 @@ import keyboard
 from bleak import BleakClient
 import threading
 
-HM10_ADDRESS = "D8:A9:8B:C4:5F:EC"
+HM10_ADDRESS = "F7B2E471-0B6C-B447-B9A7-8890E71BFFDB"#"D8:A9:8B:C4:5F:EC"
 UART_CHAR_UUID = "0000ffe1-0000-1000-8000-00805f9b34fb"
 
 delay = 0.1
@@ -67,3 +67,5 @@ def run_asyncio_loop():
 def commandeManuelClavier():
     thread = threading.Thread(target=run_asyncio_loop)
     thread.start()
+
+commandeManuelClavier()
