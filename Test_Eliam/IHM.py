@@ -327,7 +327,7 @@ def modeImage():
     elif(langue=='EN'):
         text_return = Label(IHM, text="Back to\nmain menu")
         text_return.place(x=30, y=105)
-
+    
     # Images 16/9 1920x1080
     image = "/home/xxneonmain69xx/PFR/images/Image1.png"
     img = Image.open(image).resize((747,420), Image.Resampling.LANCZOS)

@@ -1,6 +1,5 @@
 import os
 
-
 def capture_image():
 	save_dir = "/home/xxneonmain69xx/PFR/images"
 	os.makedirs(save_dir, exist_ok=True)
