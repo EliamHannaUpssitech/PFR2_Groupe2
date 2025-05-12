@@ -6,8 +6,10 @@ from manuel_clavier import *
 from manuel_manette import *
 
 def mainIHM():
+    global last_menu, langue
 
     refresh()
+    last_menu = "main"
 
     text_name = Label(IHM, text="--( MYNSSL )--", font=('broadway' , 25))
     text_name.place(x=350, y=45)
@@ -29,7 +31,7 @@ def mainIHM():
     elif(langue=='EN'): text_power = Label(IHM, text="Switch off\nthe program")
     text_power.place(x=29, y=105)
 
-    btn_qm = Button(IHM, command=help_cmd, bg=None)
+    btn_qm = Button(IHM, command=modeHelp, bg=None)
     img_qm = PhotoImage(file=str(path_img) + "qm_button.png").subsample(19, 19)
     btn_qm.config(image=img_qm)
     btn_qm.place(x=845, y=525)
@@ -73,16 +75,33 @@ def mainIHM():
 
 # MANUEL ------------------------------
 def modeManuel():
+    global last_menu, langue
 
     xarrow = 100
     yarrow = 250
     
     refresh()
+    last_menu = "manuel"
+
+    btn_flag = Button(IHM, command=language_change, bg=None)
+    if(langue == 'FR'): img_flag = PhotoImage(file=str(path_img) + "fr_flag.png").subsample(4, 4)
+    if(langue == 'EN'): img_flag = PhotoImage(file=str(path_img) + "us_flag.png").subsample(4, 4)
+    btn_flag.config(image=img_flag)
+    btn_flag.place(x=775, y=25)
+    if(langue=='FR'):   text_langue = Label(IHM, text="Changer la\nlangue")
+    elif(langue=='EN'): text_langue = Label(IHM, text="Change the\nlangage")
+    text_langue.place(x=777, y=97)
 
     btn_retour = Button(IHM, command=mainIHM, bg=None)
     img_return = PhotoImage(file=str(path_img) + "return_button.png").subsample(7, 7)
     btn_retour.config(image=img_return)
     btn_retour.place(x=25, y=25)
+    if(langue=='FR'):
+        text_return = Label(IHM, text="Retour au\nmenu de base")
+        text_return.place(x=26, y=105)
+    elif(langue=='EN'):
+        text_return = Label(IHM, text="Back to\nmain menu")
+        text_return.place(x=30, y=105)
 
     btn_car = Button(IHM, command=cmd_test, bg=None)
     img_car = PhotoImage(file=str(path_img) + "car_button.png").subsample(8, 8)
@@ -124,21 +143,38 @@ def modeManuel():
 
 # VOCAL ------------------------------
 def modeVocal():
+    global last_menu, langue
 
     refresh()
+    last_menu = "vocal"
+
+    btn_flag = Button(IHM, command=language_change, bg=None)
+    if(langue == 'FR'): img_flag = PhotoImage(file=str(path_img) + "fr_flag.png").subsample(4, 4)
+    if(langue == 'EN'): img_flag = PhotoImage(file=str(path_img) + "us_flag.png").subsample(4, 4)
+    btn_flag.config(image=img_flag)
+    btn_flag.place(x=775, y=25)
+    if(langue=='FR'):   text_langue = Label(IHM, text="Changer la\nlangue")
+    elif(langue=='EN'): text_langue = Label(IHM, text="Change the\nlangage")
+    text_langue.place(x=777, y=97)
 
     btn_retour = Button(IHM, command=mainIHM, bg=None)
     img_return = PhotoImage(file=str(path_img) + "return_button.png").subsample(7, 7)
     btn_retour.config(image=img_return)
     btn_retour.place(x=25, y=25)
+    if(langue=='FR'):
+        text_return = Label(IHM, text="Retour au\nmenu de base")
+        text_return.place(x=26, y=105)
+    elif(langue=='EN'):
+        text_return = Label(IHM, text="Back to\nmain menu")
+        text_return.place(x=30, y=105)
 
     btn_micro = Button(IHM, command=cmd_test, bg=None)
     img_micro = PhotoImage(file=str(path_img) + "Micro_button.png").subsample(7, 7)
     btn_micro.config(image=img_micro)
-    btn_micro.place(x=150, y=250)
+    btn_micro.place(x=100, y=250)
 
     text_vocal = Text(IHM, bg=None, height=33, width=55)
-    text_vocal.place(x=400, y=35)
+    text_vocal.place(x=300, y=35)
     text_vocal.config(state=DISABLED)
 
     IHM.mainloop()
@@ -146,13 +182,30 @@ def modeVocal():
 
 # AUTOMATISME ------------------------------
 def modeAutom():
+    global last_menu, langue
     
     refresh()
+    last_menu = "autom"
+
+    btn_flag = Button(IHM, command=language_change, bg=None)
+    if(langue == 'FR'): img_flag = PhotoImage(file=str(path_img) + "fr_flag.png").subsample(4, 4)
+    if(langue == 'EN'): img_flag = PhotoImage(file=str(path_img) + "us_flag.png").subsample(4, 4)
+    btn_flag.config(image=img_flag)
+    btn_flag.place(x=775, y=25)
+    if(langue=='FR'):   text_langue = Label(IHM, text="Changer la\nlangue")
+    elif(langue=='EN'): text_langue = Label(IHM, text="Change the\nlangage")
+    text_langue.place(x=777, y=97)
 
     btn_retour = Button(IHM, command=mainIHM, bg=None)
     img_return = PhotoImage(file=str(path_img) + "return_button.png").subsample(7, 7)
     btn_retour.config(image=img_return)
     btn_retour.place(x=25, y=25)
+    if(langue=='FR'):
+        text_return = Label(IHM, text="Retour au\nmenu de base")
+        text_return.place(x=26, y=105)
+    elif(langue=='EN'):
+        text_return = Label(IHM, text="Back to\nmain menu")
+        text_return.place(x=30, y=105)
 
     btn_carto = Button(IHM, command=modeCarto, bg=None)
     img_carto = PhotoImage(file=str(path_img) + "carto_button.png").subsample(3, 3)
@@ -167,37 +220,88 @@ def modeAutom():
     IHM.mainloop()
 
 def modeCarto():
+    global last_menu, langue
 
     refresh()
+    last_menu = "carto"
+
+    btn_flag = Button(IHM, command=language_change, bg=None)
+    if(langue == 'FR'): img_flag = PhotoImage(file=str(path_img) + "fr_flag.png").subsample(4, 4)
+    if(langue == 'EN'): img_flag = PhotoImage(file=str(path_img) + "us_flag.png").subsample(4, 4)
+    btn_flag.config(image=img_flag)
+    btn_flag.place(x=775, y=25)
+    if(langue=='FR'):   text_langue = Label(IHM, text="Changer la\nlangue")
+    elif(langue=='EN'): text_langue = Label(IHM, text="Change the\nlangage")
+    text_langue.place(x=777, y=97)
 
     btn_retour = Button(IHM, command=modeAutom, bg=None)
     img_return = PhotoImage(file=str(path_img) + "return_button.png").subsample(7, 7)
     btn_retour.config(image=img_return)
     btn_retour.place(x=25, y=25)
+    if(langue=='FR'):
+        text_return = Label(IHM, text="Retour au\nmenu de base")
+        text_return.place(x=26, y=105)
+    elif(langue=='EN'):
+        text_return = Label(IHM, text="Back to\nmain menu")
+        text_return.place(x=30, y=105)
 
     IHM.mainloop()
 
 def modeTrajet():
+    global last_menu, langue
 
     refresh()
+    last_menu = "trajet"
+
+    btn_flag = Button(IHM, command=language_change, bg=None)
+    if(langue == 'FR'): img_flag = PhotoImage(file=str(path_img) + "fr_flag.png").subsample(4, 4)
+    if(langue == 'EN'): img_flag = PhotoImage(file=str(path_img) + "us_flag.png").subsample(4, 4)
+    btn_flag.config(image=img_flag)
+    btn_flag.place(x=775, y=25)
+    if(langue=='FR'):   text_langue = Label(IHM, text="Changer la\nlangue")
+    elif(langue=='EN'): text_langue = Label(IHM, text="Change the\nlangage")
+    text_langue.place(x=777, y=97)
 
     btn_retour = Button(IHM, command=modeAutom, bg=None)
     img_return = PhotoImage(file=str(path_img) + "return_button.png").subsample(7, 7)
     btn_retour.config(image=img_return)
     btn_retour.place(x=25, y=25)
+    if(langue=='FR'):
+        text_return = Label(IHM, text="Retour au\nmenu de base")
+        text_return.place(x=26, y=105)
+    elif(langue=='EN'):
+        text_return = Label(IHM, text="Back to\nmain menu")
+        text_return.place(x=30, y=105)
 
     IHM.mainloop()
 ##########
 
 # IMAGE ------------------------------
 def modeImage():
+    global last_menu, langue
     
     refresh()
+    last_menu = "image"
+
+    btn_flag = Button(IHM, command=language_change, bg=None)
+    if(langue == 'FR'): img_flag = PhotoImage(file=str(path_img) + "fr_flag.png").subsample(4, 4)
+    if(langue == 'EN'): img_flag = PhotoImage(file=str(path_img) + "us_flag.png").subsample(4, 4)
+    btn_flag.config(image=img_flag)
+    btn_flag.place(x=775, y=25)
+    if(langue=='FR'):   text_langue = Label(IHM, text="Changer la\nlangue")
+    elif(langue=='EN'): text_langue = Label(IHM, text="Change the\nlangage")
+    text_langue.place(x=777, y=97)
 
     btn_retour = Button(IHM, command=mainIHM, bg=None)
     img_return = PhotoImage(file=str(path_img) + "return_button.png").subsample(7, 7)
     btn_retour.config(image=img_return)
     btn_retour.place(x=25, y=25)
+    if(langue=='FR'):
+        text_return = Label(IHM, text="Retour au\nmenu de base")
+        text_return.place(x=26, y=105)
+    elif(langue=='EN'):
+        text_return = Label(IHM, text="Back to\nmain menu")
+        text_return.place(x=30, y=105)
 
     # Images 16/9 1920x1080
     image = "Test_Eliam/images_tests/image_1102.png"
@@ -205,15 +309,44 @@ def modeImage():
 
     image_affichee = ImageTk.PhotoImage(img)
     image_analysee = Label(IHM,image=image_affichee)
-    image_analysee.place(x=25, y=125)
+    image_analysee.place(x=25, y=145)
 
     cac = carac_obj(image)
 
-    text_image = Text(IHM, bg=None, height=5, width=90)
+    text_image = Text(IHM, bg=None, height=6, width=70)
     text_image.place(x=150, y=25)
     for obj in range(cac[3]):
         text_image.insert(str(obj+1) + ".0", "Objet " + str(obj+1) + " : " + str(cac[0][obj]) + " " + str(cac[1][obj]) + "\n")
     text_image.config(state=DISABLED)
+
+    IHM.mainloop()
+
+# HELP ------------------------------
+def modeHelp():
+    global last_menu, langue
+
+    refresh()
+    last_menu = "help"
+
+    btn_flag = Button(IHM, command=language_change, bg=None)
+    if(langue == 'FR'): img_flag = PhotoImage(file=str(path_img) + "fr_flag.png").subsample(4, 4)
+    if(langue == 'EN'): img_flag = PhotoImage(file=str(path_img) + "us_flag.png").subsample(4, 4)
+    btn_flag.config(image=img_flag)
+    btn_flag.place(x=775, y=25)
+    if(langue=='FR'):   text_langue = Label(IHM, text="Changer la\nlangue")
+    elif(langue=='EN'): text_langue = Label(IHM, text="Change the\nlangage")
+    text_langue.place(x=777, y=97)
+
+    btn_retour = Button(IHM, command=mainIHM, bg=None)
+    img_return = PhotoImage(file=str(path_img) + "return_button.png").subsample(7, 7)
+    btn_retour.config(image=img_return)
+    btn_retour.place(x=25, y=25)
+    if(langue=='FR'):
+        text_return = Label(IHM, text="Retour au\nmenu de base")
+        text_return.place(x=26, y=105)
+    elif(langue=='EN'):
+        text_return = Label(IHM, text="Back to\nmain menu")
+        text_return.place(x=30, y=105)
 
     IHM.mainloop()
 ##########
@@ -229,26 +362,35 @@ def language_change():
         langue = "EN"
     elif(langue == "EN"):
         langue = "FR"
-    mainIHM()
+    menuBack()
 
-def help_cmd():
-
-    refresh()
-
-    btn_retour = Button(IHM, command=mainIHM, bg=None)
-    img_return = PhotoImage(file=str(path_img) + "return_button.png").subsample(7, 7)
-    btn_retour.config(image=img_return)
-    btn_retour.place(x=25, y=25)
-
-    IHM.mainloop()
+def menuBack():
+    global last_menu
+    if last_menu == "manuel":
+        modeManuel()
+    elif last_menu == "vocal":
+        modeVocal()
+    elif last_menu == "autom":
+        modeAutom()
+    elif last_menu == "image":
+        modeImage()
+    elif last_menu == "carto":
+        modeCarto()
+    elif last_menu == "trajet":
+        modeTrajet()
+    elif last_menu == "help":
+        modeHelp()
+    else:
+        mainIHM()
 
 def cmd_test():
-    print('commande test passée')
+    print('commande test passée') 
 
 ###########################
 
 # Variables Globales Obligatoires
 langue = "FR"
+last_menu = "main"
 path_img = "Test_Eliam/images_IHM/"
 
 # Début du programme
