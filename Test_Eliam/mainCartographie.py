@@ -7,6 +7,7 @@ import math
 import asyncio
 from bleak import BleakClient
 import keyboard
+from enregistrer_dist import *
 
 listDeplacement=[]
 CarteGlobale=[]
