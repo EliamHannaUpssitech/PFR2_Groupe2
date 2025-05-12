@@ -107,6 +107,11 @@ def modeManuel():
     img_car = PhotoImage(file=str(path_img) + "car_button.png").subsample(8, 8)
     btn_car.config(image=img_car)
     btn_car.place(x=87+xarrow, y=-170+yarrow)
+    if(langue=='FR'):
+        text_car = Label(IHM, text="Connexion\npour flèches")
+    elif(langue=='EN'):
+        text_car = Label(IHM, text="Connection\nfor arrows")
+    text_car.place(x=119+xarrow, y=-210+yarrow)
 
     btn_up = Button(IHM, command=cmd_test, bg=None)
     img_up = PhotoImage(file=str(path_img) + "Up_button.png").subsample(5, 5)
@@ -132,11 +137,21 @@ def modeManuel():
     img_clavier = PhotoImage(file=str(path_img) + "clavier_button.png").subsample(4, 4)
     btn_clavier.config(image=img_clavier)
     btn_clavier.place(x=600, y=100)
+    if(langue=='FR'):
+        text_car = Label(IHM, text="Connexion\npour clavier")
+    elif(langue=='EN'):
+        text_car = Label(IHM, text="Connection\nfor keyboard")
+    text_car.place(x=631, y=235)
 
     btn_manette = Button(IHM, command=commandeManuelManette, bg=None)
     img_manette = PhotoImage(file=str(path_img) + "manette_button.png").subsample(4, 4)
     btn_manette.config(image=img_manette)
     btn_manette.place(x=600, y=360)
+    if(langue=='FR'):
+        text_manette = Label(IHM, text="Connexion\npour manette")
+    elif(langue=='EN'):
+        text_manette = Label(IHM, text="Connection\nfor controller")
+    text_manette.place(x=630, y=500)
 
     IHM.mainloop()
 ##########
@@ -347,6 +362,52 @@ def modeHelp():
     elif(langue=='EN'):
         text_return = Label(IHM, text="Back to\nmain menu")
         text_return.place(x=30, y=105)
+
+    if(langue=='FR'):
+        text_help = Label(IHM, text=
+                          "--( Bienvenue sur l'IHM : )--\n"
+                          "\nMode Manuel :\n"
+                          "- Utiliser les flèches : commencez par appuyer sur le bouton connexion au-dessus de celles-ci, puis attendez, ensuite le robot bougera avec les flèches.\n"
+                          "- Utiliser le clavier : commencez par appuyer sur le bouton de connexion clavier, puis attendez, ensuite le robot bougera à l'aide des touches" 
+                          " \n(z, q, s, d) (avant, gauche, bas, droite).\n"
+                          "- Utiliser une manette :  commencez par appuyer sur le bouton de connexion manette, puis attendez, ensuite le robot bougera à l'aide de la manette.\n"
+
+                          "\nMode Automatisme :\n"
+                          "- Faire une cartographie : commencez par appuyer sur le bouton Cartographie, puis attendez, ensuite le robot se déplacera dans l'espace afin de faire" 
+                          " \nune carte de la pièce qui s'affichera à la fin du chemin.\n"
+                          "- Trouver un objet : commencez par appuyer sur le bouton Trajet, puis attendez, ensuite spécifiez l'objet voulu et lancez le trajet, le robot se" 
+                          " \nchargera d'aller vers l'objet voulu.\n"
+
+                          "\nMode Vocal :\n"
+                          "- Commander par vocal : commencez par appuyer sur le bouton vocal, puis attendez, ensuite parlez pour commander le robot."
+                          " \nVos commandes apparaissent sur l'IHM.\n"
+
+                          "\nMode Image :\n"
+                          "- Analyser l'image actuelle : Lorsque le mode Image est lancé, le robot se charge de prendre en photo la scène en face de lui et analysera les objets" 
+                          " \n(ici balles) et affichera l'ensemble de ceux-ci sur l'IHM.\n", justify=LEFT)
+    elif(langue=='EN'):
+        text_help = Label(IHM, text=
+                          "--( Welcome to the HMI : )--\n"
+                          "\nManual mode :\n"
+                          "- Using the arrows: start by pressing the connect button above them, then wait, then the robot will move with the arrows.\n"
+                          "- Using the keyboard: start by pressing the keyboard connection button, then wait, then the robot will move using the keys" 
+                          " \n(forward, left, down, right).\n"
+                          "- Using a joystick: first press the joystick connection button, then wait, then the robot will move using the joystick.\n"
+
+                          "\nAutomation mode :\n"
+                          "- Make a map: start by pressing the Map button, then wait, then the robot will move in space to make"
+                          " \na map of the room, which will be displayed at the end of the path.\n" 
+                          "- Find an object: start by pressing the Path button, then wait, then specify the desired object and launch the path"
+                          " \nThe robot will then go to the desired object.\n"
+
+                          "\nVocal mode :\n"
+                          "- Command by voice: first press the voice button, then wait, then speak to command the robot"
+                          " \nYour commands appear on the HMI.\n"
+
+                          "\nPicture Mode :\n"
+                          "- Analyze the current image: When Image mode is launched, the robot takes photos of the scene in front of it and analyzes the objects"
+                          " \n(in this case, balls) and display them on the HMI.\n", justify=LEFT)
+    text_help.place(x=55, y=180)
 
     IHM.mainloop()
 ##########
