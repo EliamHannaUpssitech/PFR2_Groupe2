@@ -4,6 +4,7 @@ from PIL import Image, ImageTk
 from object_details import *
 from manuel_clavier import *
 from manuel_manette_ps5 import *
+from manuel_manette_xbox import *
 from vocal import *
 from mainCartographie import *
 
@@ -138,22 +139,32 @@ def modeManuel():
     btn_clavier = Button(IHM, command=commandeManuelClavier, bg=None)
     img_clavier = PhotoImage(file=str(path_img) + "clavier_button.png").subsample(4, 4)
     btn_clavier.config(image=img_clavier)
-    btn_clavier.place(x=600, y=100)
+    btn_clavier.place(x=600, y=130)
     if(langue=='FR'):
         text_car = Label(IHM, text="Connexion\npour clavier")
     elif(langue=='EN'):
         text_car = Label(IHM, text="Connection\nfor keyboard")
-    text_car.place(x=631, y=235)
+    text_car.place(x=631, y=265)
 
-    btn_manette = Button(IHM, command=commandeManuelManette, bg=None)
-    img_manette = PhotoImage(file=str(path_img) + "manette_button.png").subsample(4, 4)
-    btn_manette.config(image=img_manette)
-    btn_manette.place(x=600, y=360)
+    btn_ps5 = Button(IHM, command=main_manette_ps5, bg=None)
+    img_ps5 = PhotoImage(file=str(path_img) + "manette_button.png").subsample(4, 4)
+    btn_ps5.config(image=img_ps5)
+    btn_ps5.place(x=500, y=360)
     if(langue=='FR'):
-        text_manette = Label(IHM, text="Connexion\npour manette")
+        text_ps5 = Label(IHM, text="Connexion pour\nmanette PS5")
     elif(langue=='EN'):
-        text_manette = Label(IHM, text="Connection\nfor controller")
-    text_manette.place(x=630, y=500)
+        text_ps5 = Label(IHM, text="Connection for\nPS5 controller")
+    text_ps5.place(x=524, y=500)
+
+    btn_xbox = Button(IHM, command=main_manette_xbox, bg=None)
+    img_xbox = PhotoImage(file=str(path_img) + "manette_button.png").subsample(4, 4)
+    btn_xbox.config(image=img_xbox)
+    btn_xbox.place(x=700, y=360)
+    if(langue=='FR'):
+        text_xbox = Label(IHM, text="Connexion pour\nmanette XboX")
+    elif(langue=='EN'):
+        text_xbox = Label(IHM, text="Connection for\nXboX controller")
+    text_xbox.place(x=724, y=500)
 
     IHM.mainloop()
 ##########

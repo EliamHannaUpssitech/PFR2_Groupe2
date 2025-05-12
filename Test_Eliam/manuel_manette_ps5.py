@@ -125,7 +125,7 @@ def run_asyncio_loop():
     pygame.quit()
     print("Programme stoppé !")
 
-def commandeManuelManette():
+def main_manette_ps5():
     reinitialiser_etat()
     thread = threading.Thread(target=run_asyncio_loop)
     thread.start()
