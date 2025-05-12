@@ -13,8 +13,6 @@ listDeplacement=[]
 CarteGlobale=[]
 distance_capteur_avant=300              # oublie pas de le supp
 delay = 0.1  # Délai entre les vérifications clavier pour envoieDemande fonction
-from vocal import*
-
 
 def action():
     global modeCarthographie
