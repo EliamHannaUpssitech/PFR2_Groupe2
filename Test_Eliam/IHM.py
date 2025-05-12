@@ -187,10 +187,13 @@ def modeVocal():
     img_micro = PhotoImage(file=str(path_img) + "Micro_button.png").subsample(7, 7)
     btn_micro.config(image=img_micro)
     btn_micro.place(x=100, y=250)
+    if(langue=='FR'):   text_vocal = Label(IHM, text=" Connexion\n+ Vocal")
+    elif(langue=='EN'): text_vocal = Label(IHM, text="Connection\n+ Vocal")
+    text_vocal.place(x=107, y=330)
 
-    text_vocal = Text(IHM, bg=None, height=33, width=55)
-    text_vocal.place(x=300, y=35)
-    text_vocal.config(state=DISABLED)
+    transcription_vocal = Text(IHM, bg=None, height=33, width=55)
+    transcription_vocal.place(x=300, y=35)
+    transcription_vocal.config(state=DISABLED)
 
     IHM.mainloop()
 ##########
@@ -226,11 +229,17 @@ def modeAutom():
     img_carto = PhotoImage(file=str(path_img) + "carto_button.png").subsample(3, 3)
     btn_carto.config(image=img_carto)
     btn_carto.place(x=183, y=186)
+    if(langue=='FR'):   text_carto = Label(IHM, text="Mode Cartographie")
+    elif(langue=='EN'): text_carto = Label(IHM, text="Cartography Mode")
+    text_carto.place(x=218, y=370)
 
     btn_trajet = Button(IHM, command=modeTrajet, bg=None)
     img_trajet = PhotoImage(file=str(path_img) + "trajet_button.png").subsample(2, 2)
     btn_trajet.config(image=img_trajet)
     btn_trajet.place(x=533, y=180)
+    if(langue=='FR'):   text_trajet = Label(IHM, text="Mode Trajet")
+    elif(langue=='EN'): text_trajet = Label(IHM, text="Travel Mode")
+    text_trajet.place(x=593, y=370)
 
     IHM.mainloop()
 
@@ -321,18 +330,28 @@ def modeImage():
     # Images 16/9 1920x1080
     image = "Test_Eliam/images_tests/image_1102.png"
     img = Image.open(image).resize((747,420), Image.Resampling.LANCZOS)
+    cac = carac_obj(image)
 
     image_affichee = ImageTk.PhotoImage(img)
     image_analysee = Label(IHM,image=image_affichee)
     image_analysee.place(x=25, y=145)
-
-    cac = carac_obj(image)
 
     text_image = Text(IHM, bg=None, height=6, width=70)
     text_image.place(x=150, y=25)
     for obj in range(cac[3]):
         text_image.insert(str(obj+1) + ".0", "Objet " + str(obj+1) + " : " + str(cac[0][obj]) + " " + str(cac[1][obj]) + "\n")
     text_image.config(state=DISABLED)
+
+    btn_rldimage = Button(IHM, command=modeImage, bg=None)
+    img_rldimage = PhotoImage(file=str(path_img) + "image_button.png").subsample(7, 7)
+    btn_rldimage.config(image=img_rldimage)
+    btn_rldimage.place(x=798, y=505)
+    if(langue=='FR'):
+        text_rldimage = Label(IHM, text="Recharger l'IHM")
+        text_rldimage.place(x=793, y=485)
+    elif(langue=='EN'):
+        text_rldimage = Label(IHM, text="Reload HMI")
+        text_rldimage.place(x=805, y=485)
 
     IHM.mainloop()
 
@@ -397,7 +416,7 @@ def modeHelp():
                           "\nAutomation mode :\n"
                           "- Make a map: start by pressing the Map button, then wait, then the robot will move in space to make"
                           " \na map of the room, which will be displayed at the end of the path.\n" 
-                          "- Find an object: start by pressing the Path button, then wait, then specify the desired object and launch the path"
+                          "- Find an object: start by pressing the Travel button, then wait, then specify the desired object and launch the path"
                           " \nThe robot will then go to the desired object.\n"
 
                           "\nVocal mode :\n"
