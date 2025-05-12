@@ -3,7 +3,7 @@ from tkinter import ttk
 from PIL import Image, ImageTk
 from object_details import *
 from manuel_clavier import *
-from manuel_manette import *
+from manuel_manette_ps5 import *
 from vocal import *
 from mainCartographie import *
 

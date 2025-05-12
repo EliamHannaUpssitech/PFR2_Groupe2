@@ -13,16 +13,20 @@ envoyer_commande = True
 vitesse = 200
 arreter = False
 
-# Seuil pour les gâchettes
-TRIGGER_THRESHOLD = 0.5
-
+# Mappings des boutons manette PS5 (DualSense)
 mappings = {
-    0: 'a',  # A => augmenter vitesse
-    2: 'x',  # X => arrêt
-    4: 'e',  # LB => diminuer vitesse
-    5: 'a',  # RB => augmenter vitesse
-    3: 's'   # Y => reculer
+    10: 'a',  # A => augmenter vitesse
+    6: 'x',   # X => arrêt
+    9: 'e',   # L1 => diminuer vitesse
+    11: 'z',  # R1 => augmenter vitesse
+    12: 's'   # Y => reculer
 }
+
+# Remplacements spécifiques
+START_BUTTON_INDEX = 6           # Start (Options)
+GAUCHE_BUTTON_INDEX = 13         # Flèche gauche
+DROITE_BUTTON_INDEX = 14         # Flèche droite
+R1_AS_TRIGGER_INDEX = 10         # R2 ne marche pas → R1 (déjà dans mappings)
 
 def boucle_manette():
     global commande_partagee, envoyer_commande, arreter
@@ -39,8 +43,6 @@ def boucle_manette():
     joystick.init()
     print(f"Manette détectée : {joystick.get_name()}")
 
-    START_BUTTON_INDEX = 7
-
     while not arreter:
         pygame.event.pump()
         boutons_actuels = set()
@@ -48,24 +50,19 @@ def boucle_manette():
         for btn_index, cmd in mappings.items():
             if joystick.get_button(btn_index):
                 boutons_actuels.add(cmd)
-        
-        # Détection du bouton Start
+
+        # Bouton "Options" pour arrêter
         if joystick.get_button(START_BUTTON_INDEX):
             print("Bouton Start détecté. Arrêt du programme.")
             print("Veuillez attendre 5 sec que la déconnexion se fasse")
             arreter = True
-            break
+            return
 
-        # Gâchette (axe 5)
-        if joystick.get_axis(5) > TRIGGER_THRESHOLD:
-            boutons_actuels.add('z')
-
-        # Croix directionnelle
-        hat = joystick.get_hat(0)
-        if hat == (1, 0):
-            boutons_actuels.add('d')  # droite
-        elif hat == (-1, 0):
-            boutons_actuels.add('q')  # gauche
+        # Flèches directionnelles
+        if joystick.get_button(DROITE_BUTTON_INDEX):
+            boutons_actuels.add('d')
+        if joystick.get_button(GAUCHE_BUTTON_INDEX):
+            boutons_actuels.add('q')
 
         if boutons_actuels:
             commande_actuelle = list(boutons_actuels)[0]
@@ -76,10 +73,7 @@ def boucle_manette():
                 commande_partagee = 'x'
                 envoyer_commande = True
 
-        envoyer_commande = True
-
         time.sleep(0.05)
-
 
 async def boucle_ble():
     global commande_partagee, envoyer_commande, vitesse, arreter
@@ -95,7 +89,6 @@ async def boucle_ble():
             if envoyer_commande:
                 try:
                     cmd = commande_partagee
-
                     await client.write_gatt_char(UART_CHAR_UUID, (cmd + "\n").encode())
 
                     if cmd == 'a':
