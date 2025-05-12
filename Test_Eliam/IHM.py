@@ -346,12 +346,9 @@ def modeImage():
     img_rldimage = PhotoImage(file=str(path_img) + "image_button.png").subsample(7, 7)
     btn_rldimage.config(image=img_rldimage)
     btn_rldimage.place(x=798, y=505)
-    if(langue=='FR'):
-        text_rldimage = Label(IHM, text="Recharger l'IHM")
-        text_rldimage.place(x=793, y=485)
-    elif(langue=='EN'):
-        text_rldimage = Label(IHM, text="Reload HMI")
-        text_rldimage.place(x=805, y=485)
+    if(langue=='FR'):   text_rldimage = Label(IHM, text="Recharger l'image")
+    elif(langue=='EN'): text_rldimage = Label(IHM, text="Reload the picture")
+    text_rldimage.place(x=788, y=485)
 
     IHM.mainloop()
 
