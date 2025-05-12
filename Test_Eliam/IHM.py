@@ -4,6 +4,7 @@ from PIL import Image, ImageTk
 from object_details import *
 from manuel_clavier import *
 from manuel_manette import *
+from vocal import *
 
 def mainIHM():
     global last_menu, langue
@@ -183,7 +184,7 @@ def modeVocal():
         text_return = Label(IHM, text="Back to\nmain menu")
         text_return.place(x=30, y=105)
 
-    btn_micro = Button(IHM, command=cmd_test, bg=None)
+    btn_micro = Button(IHM, command=main_vocal, bg=None)
     img_micro = PhotoImage(file=str(path_img) + "Micro_button.png").subsample(7, 7)
     btn_micro.config(image=img_micro)
     btn_micro.place(x=100, y=250)

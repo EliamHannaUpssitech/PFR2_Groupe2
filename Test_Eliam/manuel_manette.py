@@ -134,3 +134,4 @@ def commandeManuelManette():
     reinitialiser_etat()
     thread = threading.Thread(target=run_asyncio_loop)
     thread.start()
+    return 0
