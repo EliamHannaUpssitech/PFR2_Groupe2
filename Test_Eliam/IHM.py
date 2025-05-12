@@ -329,9 +329,9 @@ def modeImage():
         text_return.place(x=30, y=105)
 
     # Images 16/9 1920x1080
-    image = "Test_Eliam/images_tests/image_1102.png"
+    image = "/home/xxneonmain69xx/PFR/images/Image1.png"
     img = Image.open(image).resize((747,420), Image.Resampling.LANCZOS)
-    cac = carac_obj(image)
+    cac = carac_obj()
 
     image_affichee = ImageTk.PhotoImage(img)
     image_analysee = Label(IHM,image=image_affichee)

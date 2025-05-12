@@ -1,5 +1,6 @@
 import cv2
 import numpy as np
+from capture_images import *
 
 def detect_color_hsv(img_hsv):
     # Masques pour chaque couleur
@@ -60,7 +61,11 @@ def detect_color_hsv(img_hsv):
 
     return detected
 
-def carac_obj(image):
+def carac_obj():
+
+    capture_image()
+    image = "/home/xxneonmain69xx/PFR/images/Image1.png"
+
     img_color = cv2.imread(image)
     width, height, _ = img_color.shape
 
