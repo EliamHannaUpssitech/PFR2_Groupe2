@@ -8,6 +8,8 @@ import threading
 HM10_ADDRESS = "D8:A9:8B:C4:5F:EC"
 UART_CHAR_UUID = "0000ffe1-0000-1000-8000-00805f9b34fb"
 
+transcription = None
+
 def normaliser_transcription(transcription):
     return transcription.lower().split()
 
@@ -16,20 +18,20 @@ def vocal_commande(transcription):
     commandes = []
 
     for i, token in enumerate(tokens):
-        if token in ["avance", "avancer"]:
+        if token in ["avance", "avancer", "forward"]:
             commandes.append("t")
-        elif token in ["recule", "reculer"]:
+        elif token in ["recule", "reculer", "backward"]:
             commandes.append("g")
-        elif token in ["tourne", "tourner"]:
-            if i + 2 < len(tokens) and tokens[i + 1] in ["à", "de"]:
+        elif token in ["tourne", "tourner", "turn"]:
+            if i + 2 < len(tokens) and tokens[i + 1] in ["à", "de", "to"]:
                 direction = tokens[i + 2]
-                if direction == "gauche":
+                if direction == "gauche" or direction == "left":
                     commandes.append("f")
-                elif direction == "droite":
+                elif direction == "droite" or direction == "right":
                     commandes.append("h")
-        elif token in ["stop", "arrête", "arrete", "arrêter", "pause"]:
+        elif token in ["stop", "arrête", "arrete", "arrêter", "pause", "stoppe"]:
             commandes.append("x")
-        elif token in ["demi-tour", "demitour", "retourne", "retourner"]:
+        elif token in ["demi-tour", "demitour", "retourne", "retourner", "half turn"]:
             commandes.append("k")
     
     return commandes
@@ -38,6 +40,7 @@ def vocal_commande(transcription):
 
 # Boucle principale d'écoute + envoi BLE
 async def boucle_vocale(client):
+    global transcription
     recognizer = sr.Recognizer()
 
     while True:
@@ -91,9 +94,13 @@ async def bclvocal():
         await boucle_vocale(client)
 
 def run_asyncio_loop():
-        asyncio.run(bclvocal())
+    asyncio.run(bclvocal())
+    print("Programme stoppé !")
 
 def main_vocal():
     thread = threading.Thread(target=run_asyncio_loop)
     thread.start()
-    return 0
+    return
+
+def get_transcription():
+    return transcription
