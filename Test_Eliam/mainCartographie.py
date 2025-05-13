@@ -274,9 +274,13 @@ def main_carto():
                 try:
                     while True:
                         if ("distance"):
-                                os.system('ssh xxneonmain69xx@172.20.10.9 "python3 /home/xxneonmain69xx/PFR/capture_images.py"')
+                                os.system('ssh xxneonmain69xx@172.20.10.9 "python3 /home/xxneonmain69xx/PFR/enregistrer_dist.py"')
+                                
+                                dist_path = "\\\\172.20.10.9\Partage\distance.txt"
+                                with open(dist_path, "r") as f:
+                                    content = f.read()
+                                    print("Contenu de distance.txt :", content)
 
-                                image = "\\\\172.20.10.9\Partage\images\Image1.png"
                         elif ("deplacement"):
                                 commande = 'o' # lancer mode autom 
                         else :

@@ -64,6 +64,7 @@ def detect_color_hsv(img_hsv):
 def carac_obj():
 
     os.system('ssh xxneonmain69xx@172.20.10.9 "python3 /home/xxneonmain69xx/PFR/capture_images.py"')
+    os.system('exit')
 
     image = "\\\\172.20.10.9\Partage\images\Image1.png"
 
