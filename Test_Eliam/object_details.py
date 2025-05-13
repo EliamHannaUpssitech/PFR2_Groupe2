@@ -1,6 +1,7 @@
 import cv2
 import numpy as np
 import os
+import time
 
 def detect_color_hsv(img_hsv):
     # Masques pour chaque couleur
@@ -65,6 +66,8 @@ def carac_obj():
 
     os.system('ssh xxneonmain69xx@172.20.10.9 "python3 /home/xxneonmain69xx/PFR/capture_images.py"')
     os.system('exit')
+
+    time.sleep(3)
 
     image = "\\\\172.20.10.9\Partage\images\Image1.png"
 
@@ -162,18 +165,14 @@ def carac_obj():
 
     print("taille image : " + str(height) + ", " + str(width))
     print([formeObjets, colorObjets, positionObjets, nbObjets])
-    """
+    
     cv2.imshow("IMG_ + str(i)", img_color)
     cv2.waitKey(0)
-    """
+    
     # NOMBRE D'OBJETS : nbObjets
     # FORME : forme = [obj1, obj2, ...]
     # COULEUR : colorObjets = [obj1, obj2, ...] -> objX = [R, G, B]
     # POSITION : positionObjets = [obj1, obj2, ...] -> objX = [posX, posY]
     return([formeObjets, colorObjets, positionObjets, nbObjets])
-"""
-images = list(range(5389, 5408 + 1))
-for i in images:
-    carac_obj("Test_Eliam/IMG_300/IMG_"+ str(i) +".jpeg")
-"""
-#carac_obj()
+
+

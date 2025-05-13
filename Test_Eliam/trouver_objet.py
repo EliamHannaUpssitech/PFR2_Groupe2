@@ -1,15 +1,17 @@
 import asyncio
 from bleak import BleakClient
-import time
 from object_details import *  # La fonction ne prend aucun argument
 
 HM10_ADDRESS = "D8:A9:8B:C4:5F:EC"
 UART_CHAR_UUID = "0000ffe1-0000-1000-8000-00805f9b34fb"
 
 DELAI = 0.1
-TOLERANCE_CENTRAGE = 100  # Valeur pour x dans [445, 645]
+TOLERANCE_CENTRAGE = 200  # Valeur pour x de marge
+
+formes = None
 couleurs = None
 positions = None
+nb = None
 
 async def envoyer(client, commande):
     await client.write_gatt_char(UART_CHAR_UUID, (commande + "\n").encode())
@@ -17,13 +19,10 @@ async def envoyer(client, commande):
     await asyncio.sleep(DELAI)
 
 async def recentrer_objet(client, couleur_cible):
-    global couleurs, positions
+    global positions, couleurs, positions, nb
     """Effectue un centrage de l'objet cible, retourne True si reussi"""
     for _ in range(6):
-        infos = carac_obj()
-        #formes, couleurs, positions, nb = infos
-        couleurs = infos[1] 
-        positions = infos[2]
+        take_picture()
 
         if couleur_cible not in couleurs:
             print("Objet non detecte pendant recentrage.")
@@ -46,7 +45,7 @@ async def recentrer_objet(client, couleur_cible):
     return False
 
 async def trouver_objet(couleur_cible):
-    global couleurs, positions
+    global formes, couleurs, positions, nb
     print(f"Connexion a {HM10_ADDRESS}...")
     async with BleakClient(HM10_ADDRESS) as client:
         if not client.is_connected:
@@ -59,10 +58,7 @@ async def trouver_objet(couleur_cible):
 
         for tentative in range(5):
             print(f"\nTentative {tentative+1}/5 - Analyse camera...")
-            #formes, couleurs, positions, nb = carac_obj()
-            infos = carac_obj()
-            couleurs = infos[1] 
-            positions = infos[2]
+            take_picture()
 
             if couleur_cible in couleurs:
                 index = couleurs.index(couleur_cible)
@@ -98,7 +94,7 @@ async def trouver_objet(couleur_cible):
 
             else:
                 print(f"Objet {couleur_cible} non visible. Rotation droite.")
-                await envoyer(client, 'd')
+                await envoyer(client, 'n')
                 await asyncio.sleep(0.6)
                 await envoyer(client, 'x')
 
@@ -107,6 +103,11 @@ async def trouver_objet(couleur_cible):
         await asyncio.sleep(20)
         await envoyer(client, 'm')
         await envoyer(client, 'x')
+
+def take_picture():
+    global formes, couleurs, positions, nb
+    infos = carac_obj()
+    formes, couleurs, positions, nb = infos[0], infos[1], infos[2], infos[3]
 
 # Exemple d'execution
 if __name__ == "__main__":
