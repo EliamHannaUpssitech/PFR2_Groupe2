@@ -80,7 +80,7 @@ def carac_obj():
     # Passage de l'image en niveau de gris à partir d'une info HSV afin de séparer les tons (background / objets)
     img_gray = cv2.cvtColor(img_blur, cv2.COLOR_BGR2GRAY)
 
-    _,img_thresh = cv2.threshold(img_gray, 147, 255, cv2.THRESH_BINARY)
+    _,img_thresh = cv2.threshold(img_gray, 137, 255, cv2.THRESH_BINARY)
 
     # CONTOURS
     ## RETR_EXTERNAL : récupére que contours externes, évite de trouver plusieurs fois les contours internes ou superposés

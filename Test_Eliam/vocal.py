@@ -72,6 +72,7 @@ def vocal_commande(transcription):
 
 # Boucle principale d'écoute + envoi BLE
 async def boucle_vocale(client):
+    global transcription
     recognizer = sr.Recognizer()
 
     while True:
@@ -114,6 +115,7 @@ async def boucle_vocale(client):
                 print(f"Erreur inattendue : {e}")
 
 async def bclvocal():
+    global transcription
     print(f"Connexion à {HM10_ADDRESS}...")
     async with BleakClient(HM10_ADDRESS) as client:
         if not client.is_connected:
@@ -124,13 +126,16 @@ async def bclvocal():
         await boucle_vocale(client)
 
 def run_asyncio_loop():
+    global transcription
     asyncio.run(bclvocal())
     print("Programme stoppé !")
 
 def main_vocal():
+    global transcription
     thread = threading.Thread(target=run_asyncio_loop)
     thread.start()
     return
 
 def get_transcription():
+    global transcription
     return transcription
