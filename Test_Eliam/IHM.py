@@ -349,10 +349,11 @@ def modeImage():
         text_return = Label(IHM, text="Back to\nmain menu")
         text_return.place(x=30, y=105)
 
-    # Images 16/9 1920x1080
-    image = "/home/xxneonmain69xx/PFR/images/Image1.png"
-    img = Image.open(image).resize((747,420), Image.Resampling.LANCZOS)
     cac = carac_obj()
+
+    # Images 16/9 1920x1080
+    image = "\\\\172.20.10.9\Partage\images\Image1.png"
+    img = Image.open(image).resize((747,420), Image.Resampling.LANCZOS)
 
     image_affichee = ImageTk.PhotoImage(img)
     image_analysee = Label(IHM,image=image_affichee)
