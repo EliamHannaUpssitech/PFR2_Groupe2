@@ -7,14 +7,12 @@ import math
 import asyncio
 from bleak import BleakClient
 import keyboard
-from enregistrer_dist import *
+import os
 
 listDeplacement=[]
 CarteGlobale=[]
 distance_capteur_avant=300              # oublie pas de le supp
 delay = 0.1  # Délai entre les vérifications clavier pour envoieDemande fonction
-from vocal import*
-
 
 def action():
     global modeCarthographie
@@ -275,13 +273,14 @@ def envoi_demande(demande) :
             try:
                 while True:
                     if ("distance"):
-                            enregistrer_dist()
+                            commande = 'l'
+                            os.system("python3 \\\\172.20.10.9\Partage\enregistrer_dist.py")
                     elif ("deplacement"):
                             commande = 'o' # lancer mode autom 
                     else :
                             commande = 'm' # fermer
                             commande = 'x' # fermer le mode autom
-
+                    #print(commande)
                     if commande != derniere_commande:
                         try:
                             await client.write_gatt_char(UART_CHAR_UUID, (commande + "\n").encode())
