@@ -1,6 +1,6 @@
 import cv2
 import numpy as np
-from capture_images import *
+import os
 
 def detect_color_hsv(img_hsv):
     # Masques pour chaque couleur
@@ -63,11 +63,12 @@ def detect_color_hsv(img_hsv):
 
 def carac_obj():
 
-    capture_image()
-    image = "/home/xxneonmain69xx/PFR/images/Image1.png"
+    os.system('ssh xxneonmain69xx@172.20.10.9 "python3 /home/xxneonmain69xx/PFR/capture_images.py"')
+
+    image = "\\\\172.20.10.9\Partage\images\Image1.png"
 
     img_color = cv2.imread(image)
-    width, height, _ = img_color.shape
+    width, height = 1920, 1080
 
     # Passage de l'image en HSV pour mieux séparer les couleurs
     img_hsv = cv2.cvtColor(img_color, cv2.COLOR_BGR2HSV)
@@ -78,7 +79,7 @@ def carac_obj():
     # Passage de l'image en niveau de gris à partir d'une info HSV afin de séparer les tons (background / objets)
     img_gray = cv2.cvtColor(img_blur, cv2.COLOR_BGR2GRAY)
 
-    _,img_thresh = cv2.threshold(img_gray, 127, 255, cv2.THRESH_BINARY)
+    _,img_thresh = cv2.threshold(img_gray, 147, 255, cv2.THRESH_BINARY)
 
     # CONTOURS
     ## RETR_EXTERNAL : récupére que contours externes, évite de trouver plusieurs fois les contours internes ou superposés
@@ -160,10 +161,10 @@ def carac_obj():
 
     print("taille image : " + str(height) + ", " + str(width))
     print([formeObjets, colorObjets, positionObjets, nbObjets])
-    """
+    #"""
     cv2.imshow("IMG_ + str(i)", img_color)
     cv2.waitKey(0)
-    """
+    #"""
     # NOMBRE D'OBJETS : nbObjets
     # FORME : forme = [obj1, obj2, ...]
     # COULEUR : colorObjets = [obj1, obj2, ...] -> objX = [R, G, B]
@@ -174,4 +175,4 @@ images = list(range(5389, 5408 + 1))
 for i in images:
     carac_obj("Test_Eliam/IMG_300/IMG_"+ str(i) +".jpeg")
 """
-#carac_obj("Test_Eliam/images_tests/image_1102.png")
+carac_obj()
