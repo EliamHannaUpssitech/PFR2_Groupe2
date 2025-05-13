@@ -7,7 +7,7 @@ import math
 import asyncio
 from bleak import BleakClient
 import keyboard
-from enregistrer_dist import *
+import os
 
 def main_carto():
     listDeplacement=[]
@@ -274,7 +274,9 @@ def main_carto():
                 try:
                     while True:
                         if ("distance"):
-                                enregistrer_dist()
+                                os.system('ssh xxneonmain69xx@172.20.10.9 "python3 /home/xxneonmain69xx/PFR/capture_images.py"')
+
+                                image = "\\\\172.20.10.9\Partage\images\Image1.png"
                         elif ("deplacement"):
                                 commande = 'o' # lancer mode autom 
                         else :
