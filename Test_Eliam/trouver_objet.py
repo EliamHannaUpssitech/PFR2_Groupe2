@@ -1,6 +1,7 @@
 import asyncio
 from bleak import BleakClient
 from object_details import *  # La fonction ne prend aucun argument
+import threading
 
 HM10_ADDRESS = "D8:A9:8B:C4:5F:EC"
 UART_CHAR_UUID = "0000ffe1-0000-1000-8000-00805f9b34fb"
@@ -18,11 +19,13 @@ async def envoyer(client, commande):
     print(f"Envoye : {commande}")
     await asyncio.sleep(DELAI)
 
-async def recentrer_objet(client, couleur_cible):
+async def recentrer_objet(client, couleur_cible, tolerance, tentatives):
     global positions, couleurs, positions, nb
     """Effectue un centrage de l'objet cible, retourne True si reussi"""
-    for _ in range(6):
-        take_picture()
+    for _ in range(tentatives):
+
+        if _ > 0: take_picture()
+        await asyncio.sleep(3)
 
         if couleur_cible not in couleurs:
             print("Objet non detecte pendant recentrage.")
@@ -32,7 +35,7 @@ async def recentrer_objet(client, couleur_cible):
         x = positions[index][0]
         print(f"Recentrage : x = {x}")
 
-        if abs(x - 960) <= TOLERANCE_CENTRAGE:
+        if abs(x - 960) <= TOLERANCE_CENTRAGE/tolerance:
             print("Objet centre.")
             return True
 
@@ -66,7 +69,7 @@ async def trouver_objet(couleur_cible):
                 print(f"Objet {couleur_cible} detecte a x = {x}")
 
                 # Centrage initial
-                centre = await recentrer_objet(client, couleur_cible)
+                centre = await recentrer_objet(client, couleur_cible, 1, 6)
                 if not centre:
                     continue
 
@@ -78,10 +81,26 @@ async def trouver_objet(couleur_cible):
 
                 # Recentrage a nouveau
                 print("Recentrage après avancee...")
-                centre = await recentrer_objet(client, couleur_cible)
+                take_picture()
+                await asyncio.sleep(2)
+                centre = await recentrer_objet(client, couleur_cible, 2, 2)
                 if not centre:
                     continue
+                """
+                # Avance jusqu'a 25 cm
+                await envoyer(client, 'i')
+                await asyncio.sleep(2.5)
+                await envoyer(client, 'm')
+                await envoyer(client, 'x')
 
+                # Recentrage a nouveau
+                print("Recentrage après avancee...")
+                take_picture()
+                await asyncio.sleep(2)
+                centre = await recentrer_objet(client, couleur_cible, 4, 4)
+                if not centre:
+                    continue
+                """
                 # Approche lente
                 print("Approche finale lente...")
                 await envoyer(client, 'w')
@@ -99,8 +118,8 @@ async def trouver_objet(couleur_cible):
                 await envoyer(client, 'x')
 
         print("echec : Objet non trouve après 5 tentatives. Mode libre.")
-        await envoyer(client, 'o')
-        await asyncio.sleep(20)
+        #await envoyer(client, 'o')
+        #await asyncio.sleep(20)
         await envoyer(client, 'm')
         await envoyer(client, 'x')
 
@@ -109,7 +128,11 @@ def take_picture():
     infos = carac_obj()
     formes, couleurs, positions, nb = infos[0], infos[1], infos[2], infos[3]
 
-# Exemple d'execution
-if __name__ == "__main__":
-    couleur_cible = "Orange"  # a ajuster
+def run_asyncio_loop():
+    couleur_cible = "Orange"
     asyncio.run(trouver_objet(couleur_cible))
+    print("Programme stoppé !")
+
+def main_trouver_objet():
+    thread = threading.Thread(target=run_asyncio_loop)
+    thread.start()

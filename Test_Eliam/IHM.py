@@ -8,6 +8,7 @@ from manuel_manette_xbox import *
 from vocal import *
 from mainCartographie import *
 from deplacement_libre import *
+from trouver_objet import *
 
 def mainIHM():
     global last_menu, langue
@@ -330,6 +331,14 @@ def modeTrajet():
     elif(langue=='EN'):
         text_return = Label(IHM, text="Back to\nmain menu")
         text_return.place(x=30, y=105)
+
+    btn_trajet = Button(IHM, command=main_trouver_objet, bg=None)
+    img_trajet = PhotoImage(file=str(path_img) + "trajet_button.png").subsample(2, 2)
+    btn_trajet.config(image=img_trajet)
+    btn_trajet.place(x=543, y=280)
+    if(langue=='FR'):   text_trajet = Label(IHM, text="Mode Trajet")
+    elif(langue=='EN'): text_trajet = Label(IHM, text="Travel Mode")
+    text_trajet.place(x=603, y=470)
 
     IHM.mainloop()
 ##########
