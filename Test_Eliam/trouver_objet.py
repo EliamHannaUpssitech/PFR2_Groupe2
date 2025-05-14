@@ -111,5 +111,5 @@ def take_picture():
 
 # Exemple d'execution
 if __name__ == "__main__":
-    couleur_cible = "Jaune"  # a ajuster
+    couleur_cible = "Orange"  # a ajuster
     asyncio.run(trouver_objet(couleur_cible))

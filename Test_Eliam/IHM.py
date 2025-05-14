@@ -381,6 +381,8 @@ def modeImage():
             if cac[1][obj] == 'Jaune':      couleur_act = 'Yellow'
             if cac[1][obj] == 'Rouge':      couleur_act = 'Red'
             if cac[1][obj] == 'Bleu':       couleur_act = 'Blue'
+            if cac[1][obj] == 'Orange':      couleur_act = 'Orange'
+            if cac[1][obj] == 'Violet':       couleur_act = 'Purple'
             text_image.insert(str(obj+1) + ".0", "Object " + str(obj+1) + " : " + str(couleur_act) + " " + str(objet_act) + "\n")
     text_image.config(state=DISABLED)
 
