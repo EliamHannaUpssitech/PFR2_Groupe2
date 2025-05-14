@@ -117,27 +117,33 @@ def modeManuel():
     elif(langue=='EN'): text_car = Label(IHM, text="Connection\nfor arrows")
     text_car.place(x=119+xarrow, y=-210+yarrow)
 
-    """
-    btn_up = Button(IHM, command=cmd_test, bg=None)
+    def envoyer_z():
+        envoyer_commande('z')
+    btn_up = Button(IHM, command=envoyer_z, bg=None)
     img_up = PhotoImage(file=str(path_img) + "Up_button.png").subsample(5, 5)
     btn_up.config(image=img_up)
     btn_up.place(x=100+xarrow, y=0+yarrow)
 
-    btn_down = Button(IHM, command=cmd_test, bg=None)
+    def envoyer_q():
+        envoyer_commande('q')
+    btn_down = Button(IHM, command=envoyer_q, bg=None)
     img_down = PhotoImage(file=str(path_img) + "Down_button.png").subsample(5, 5)
     btn_down.config(image=img_down)
     btn_down.place(x=100+xarrow, y=200+yarrow)
 
-    btn_left = Button(IHM, command=cmd_test, bg=None)
+    def envoyer_s():
+        envoyer_commande('s')
+    btn_left = Button(IHM, command=envoyer_s, bg=None)
     img_left = PhotoImage(file=str(path_img) + "Left_button.png").subsample(5, 5)
     btn_left.config(image=img_left)
     btn_left.place(x=0+xarrow, y=100+yarrow)
 
-    btn_right = Button(IHM, command=cmd_test, bg=None)
+    def envoyer_d():
+        envoyer_commande('d')
+    btn_right = Button(IHM, command=envoyer_d, bg=None)
     img_right = PhotoImage(file=str(path_img) + "Right_button.png").subsample(5, 5)
     btn_right.config(image=img_right)
     btn_right.place(x=200+xarrow, y=100+yarrow)
-    """
 
     btn_clavier = Button(IHM, command=commandeManuelClavier, bg=None)
     img_clavier = PhotoImage(file=str(path_img) + "clavier_button.png").subsample(4, 4)
