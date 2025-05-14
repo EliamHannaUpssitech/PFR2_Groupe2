@@ -19,7 +19,7 @@ def decouper_en_commandes(transcription):
 def extraire_commandes(sous_phrase):
     tokens = normaliser_transcription(sous_phrase)
     commandes = []
-    duree = 0.78  # durée par défaut
+    duree = 0.55  # durée par défaut
 
     for i, token in enumerate(tokens):
         if token in ["avance", "avancer", "forward"]:
@@ -50,7 +50,7 @@ def extraire_commandes(sous_phrase):
             if i + 4 < len(tokens) and tokens[i + 3] == "de":
                 try:
                     angle = float(tokens[i + 4].replace("°", "").replace(",", "."))
-                    duree = angle / 100
+                    duree = angle / 190
                 except ValueError:
                     pass
 
@@ -79,7 +79,7 @@ async def boucle_vocale(client):
             print("\nParlez maintenant (ou dites 'stop' pour arrêter)...")
             recognizer.adjust_for_ambient_noise(source)
             try:
-                audio = recognizer.listen(source, timeout=5, phrase_time_limit=3)
+                audio = recognizer.listen(source, timeout=8, phrase_time_limit=5)
                 print("Reconnaissance...")
                 transcription = recognizer.recognize_google(audio, language="fr-FR")
                 print(f"Vous avez dit : {transcription}")
