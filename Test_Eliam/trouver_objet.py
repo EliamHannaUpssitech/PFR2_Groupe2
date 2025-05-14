@@ -36,7 +36,7 @@ async def recentrer_objet(client, couleur_cible):
             print("Objet centre.")
             return True
 
-        direction = 'g' if x > 960 else 'h'
+        direction = 'h' if x > 960 else 'g'
         await envoyer(client, direction)
         await envoyer(client, 'x')
         await asyncio.sleep(0.8)
