@@ -8,15 +8,18 @@ import threading
 HM10_ADDRESS = "D8:A9:8B:C4:5F:EC"
 UART_CHAR_UUID = "0000ffe1-0000-1000-8000-00805f9b34fb"
 
-transcription = None
+transcription = ""
 
 def normaliser_transcription(transcription):
     return transcription.lower().split()
 
-def vocal_commande(transcription):
-    tokens = normaliser_transcription(transcription)
+def decouper_en_commandes(transcription):
+    return re.split(r"\b(?:et|puis|ensuite|,|;|\.|\bet après\b)\b", transcription.lower())
+
+def extraire_commandes(sous_phrase):
+    tokens = normaliser_transcription(sous_phrase)
     commandes = []
-    duree = 0.9  # durée par défaut en secondes
+    duree = 0.78  # durée par défaut
 
     for i, token in enumerate(tokens):
         if token in ["avance", "avancer", "forward"]:
@@ -24,7 +27,7 @@ def vocal_commande(transcription):
             if i + 2 < len(tokens) and tokens[i + 1] == "de":
                 try:
                     distance = float(tokens[i + 2].replace(",", "."))
-                    duree = distance * 1.0  # Ajustable selon ton système
+                    duree = distance * 1.0
                 except ValueError:
                     pass
 
@@ -40,15 +43,14 @@ def vocal_commande(transcription):
         elif token in ["tourne", "tourner", "turn"]:
             if i + 2 < len(tokens) and tokens[i + 1] in ["à", "de", "to"]:
                 direction = tokens[i + 2]
-                if direction == "gauche" or direction == "left":
+                if direction in ["gauche", "left"]:
                     commandes.append("f")
-                elif direction == "droite" or direction == "right":
+                elif direction in ["droite", "right"]:
                     commandes.append("h")
-                        # Recherche d’un angle juste après (ex: "tourne à droite de 45")
             if i + 4 < len(tokens) and tokens[i + 3] == "de":
                 try:
                     angle = float(tokens[i + 4].replace("°", "").replace(",", "."))
-                    duree = angle / 90.0  # ex : 45° → 0.5s
+                    duree = angle / 100
                 except ValueError:
                     pass
 
@@ -57,7 +59,7 @@ def vocal_commande(transcription):
 
         elif token in ["demi-tour", "demitour", "retourne", "retourner", "half turn"]:
             commandes.append("f")
-            duree = 1.8  # pour 180°
+            duree = duree * 2  # 180°
 
         elif token in ["augmente", "accélère", "accelere", "speed"]:
             commandes.append("a")
@@ -68,10 +70,8 @@ def vocal_commande(transcription):
     return commandes, duree
 
 
-
-
-# Boucle principale d'écoute + envoi BLE
 async def boucle_vocale(client):
+    global transcription
     recognizer = sr.Recognizer()
 
     while True:
@@ -79,32 +79,38 @@ async def boucle_vocale(client):
             print("\nParlez maintenant (ou dites 'stop' pour arrêter)...")
             recognizer.adjust_for_ambient_noise(source)
             try:
-                audio = recognizer.listen(source, timeout=5, phrase_time_limit=2)
+                audio = recognizer.listen(source, timeout=5, phrase_time_limit=3)
                 print("Reconnaissance...")
                 transcription = recognizer.recognize_google(audio, language="fr-FR")
                 print(f"Vous avez dit : {transcription}")
-                
-                commandes, duree = vocal_commande(transcription)
 
-                if not commandes:
+                phrases = decouper_en_commandes(transcription)
+                toutes_les_commandes = []
+
+                for phrase in phrases:
+                    commandes, duree = extraire_commandes(phrase)
+                    if commandes:
+                        toutes_les_commandes.append((commandes, duree))
+
+                if not toutes_les_commandes:
                     print("Aucune commande reconnue.")
                     continue
 
-                if "x" in commandes:
-                    print("Commande d'arrêt détectée. Fin du programme.")
-                    await client.write_gatt_char(UART_CHAR_UUID, ("m\n").encode())
+                for commandes, duree in toutes_les_commandes:
+                    if "x" in commandes:
+                        print("Commande d'arrêt détectée. Fin du programme.")
+                        await client.write_gatt_char(UART_CHAR_UUID, ("m\n").encode())
+                        await client.write_gatt_char(UART_CHAR_UUID, ("x\n").encode())
+                        return
+
+                    for cmd in commandes:
+                        await client.write_gatt_char(UART_CHAR_UUID, (cmd + "\n").encode())
+                        print(f"Envoyé : {cmd}")
+                        await asyncio.sleep(0.3)
+
+                    await asyncio.sleep(duree)
                     await client.write_gatt_char(UART_CHAR_UUID, ("x\n").encode())
-                    break
-
-                for cmd in commandes:
-                    await client.write_gatt_char(UART_CHAR_UUID, (cmd + "\n").encode())
-                    print(f"Envoyé : {cmd}")
-                    await asyncio.sleep(0.3)
-
-                # Attente en fonction de la durée, puis envoi automatique de "x"
-                await asyncio.sleep(duree)
-                await client.write_gatt_char(UART_CHAR_UUID, ("x\n").encode())
-                print("Arrêt automatique envoyé (x)")
+                    print("Arrêt automatique envoyé (x)")
 
             except sr.UnknownValueError:
                 print("Je n'ai pas compris.")
@@ -120,7 +126,7 @@ async def bclvocal():
             print("Connexion échouée.")
             return
         print("Connecté au module HM-10.")
-        await client.write_gatt_char(UART_CHAR_UUID, ("j\n").encode())#passe en mode vocal
+        await client.write_gatt_char(UART_CHAR_UUID, ("j\n").encode())  # mode vocal
         await boucle_vocale(client)
 
 def run_asyncio_loop():
@@ -130,7 +136,6 @@ def run_asyncio_loop():
 def main_vocal():
     thread = threading.Thread(target=run_asyncio_loop)
     thread.start()
-    return
 
 def get_transcription():
     return transcription

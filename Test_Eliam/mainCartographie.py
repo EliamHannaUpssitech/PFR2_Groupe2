@@ -7,7 +7,7 @@ import math
 import asyncio
 from bleak import BleakClient
 import keyboard
-from enregistrer_dist import *
+import os
 
 def main_carto():
     listDeplacement=[]
@@ -274,7 +274,13 @@ def main_carto():
                 try:
                     while True:
                         if ("distance"):
-                                enregistrer_dist()
+                                os.system('ssh xxneonmain69xx@172.20.10.9 "python3 /home/xxneonmain69xx/PFR/enregistrer_dist.py"')
+                                
+                                dist_path = "\\\\172.20.10.9\Partage\distance.txt"
+                                with open(dist_path, "r") as f:
+                                    content = f.read()
+                                    print("Contenu de distance.txt :", content)
+
                         elif ("deplacement"):
                                 commande = 'o' # lancer mode autom 
                         else :
