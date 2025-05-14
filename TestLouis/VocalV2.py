@@ -1,0 +1,129 @@
+import asyncio
+import re
+import speech_recognition as sr
+from bleak import BleakClient
+
+# Adresse Bluetooth
+HM10_ADDRESS = "D8:A9:8B:C4:5F:EC"
+UART_CHAR_UUID = "0000ffe1-0000-1000-8000-00805f9b34fb"
+
+def normaliser_transcription(transcription):
+    return transcription.lower().split()
+
+def vocal_commande(transcription):
+    tokens = normaliser_transcription(transcription)
+    commandes = []
+    duree = 0.9  # durée par défaut en secondes
+
+    for i, token in enumerate(tokens):
+        if token in ["avance", "avancer"]:
+            commandes.append("t")
+            if i + 2 < len(tokens) and tokens[i + 1] == "de":
+                try:
+                    distance = float(tokens[i + 2].replace(",", "."))
+                    duree = distance * 1.0  # Ajustable selon ton système
+                except ValueError:
+                    pass
+
+        elif token in ["recule", "reculer"]:
+            commandes.append("g")
+            if i + 2 < len(tokens) and tokens[i + 1] == "de":
+                try:
+                    distance = float(tokens[i + 2].replace(",", "."))
+                    duree = distance * 1.0
+                except ValueError:
+                    pass
+
+        elif token in ["tourne", "tourner"]:
+            if i + 2 < len(tokens) and tokens[i + 1] in ["à", "de"]:
+                direction = tokens[i + 2]
+                if direction == "gauche":
+                    commandes.append("f")
+                elif direction == "droite":
+                    commandes.append("h")
+                        # Recherche d’un angle juste après (ex: "tourne à droite de 45")
+            if i + 4 < len(tokens) and tokens[i + 3] == "de":
+                try:
+                    angle = float(tokens[i + 4].replace("°", "").replace(",", "."))
+                    duree = angle / 90.0  # ex : 45° → 0.5s
+                except ValueError:
+                    pass
+
+        elif token in ["stop", "arrête", "arrete", "arrêter", "pause","stope"]:
+            commandes.append("x")
+
+        elif token in ["demi-tour", "demitour", "retourne", "retourner"]:
+            commandes.append("f")
+            duree = 1.8  # pour 180°
+
+        elif token in ["augmente", "accélère", "accelere"]:
+            commandes.append("a")
+
+        elif token in ["ralentis", "diminue", "réduit", "reduit","ralenti"]:
+            commandes.append("e")
+
+    return commandes, duree
+
+
+
+
+# Boucle principale d'écoute + envoi BLE
+async def boucle_vocale(client):
+    recognizer = sr.Recognizer()
+
+    while True:
+        with sr.Microphone() as source:
+            print("\nParlez maintenant (ou dites 'stop' pour arrêter)...")
+            recognizer.adjust_for_ambient_noise(source)
+            try:
+                audio = recognizer.listen(source, timeout=5, phrase_time_limit=2)
+                print("Reconnaissance...")
+                transcription = recognizer.recognize_google(audio, language="fr-FR")
+                print(f"Vous avez dit : {transcription}")
+                
+                commandes, duree = vocal_commande(transcription)
+
+                if not commandes:
+                    print("Aucune commande reconnue.")
+                    continue
+
+                if "x" in commandes:
+                    print("Commande d'arrêt détectée. Fin du programme.")
+                    await client.write_gatt_char(UART_CHAR_UUID, ("m\n").encode())
+                    await client.write_gatt_char(UART_CHAR_UUID, ("x\n").encode())
+                    break
+
+                for cmd in commandes:
+                    await client.write_gatt_char(UART_CHAR_UUID, (cmd + "\n").encode())
+                    print(f"Envoyé : {cmd}")
+                    await asyncio.sleep(0.3)
+
+                # Attente en fonction de la durée, puis envoi automatique de "x"
+                await asyncio.sleep(duree)
+                await client.write_gatt_char(UART_CHAR_UUID, ("x\n").encode())
+                print("Arrêt automatique envoyé (x)")
+
+            except sr.UnknownValueError:
+                print("Je n'ai pas compris.")
+            except sr.RequestError as e:
+                print(f"Erreur API Google : {e}")
+            except Exception as e:
+                print(f"Erreur inattendue : {e}")
+
+
+
+async def main():
+    print(f"Connexion à {HM10_ADDRESS}...")
+    async with BleakClient(HM10_ADDRESS) as client:
+        if not client.is_connected:
+            print("Connexion échouée.")
+            return
+        print("Connecté au module HM-10.")
+        await client.write_gatt_char(UART_CHAR_UUID, ("j\n").encode())#passe en mode vocal
+        await boucle_vocale(client)
+
+if __name__ == "__main__":
+    try:
+        asyncio.run(main())
+    except KeyboardInterrupt:
+        print("Arrêt manuel.")

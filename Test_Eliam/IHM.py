@@ -3,8 +3,10 @@ from tkinter import ttk
 from PIL import Image, ImageTk
 from object_details import *
 from manuel_clavier import *
-from manuel_manette import *
+from manuel_manette_ps5 import *
+from manuel_manette_xbox import *
 from vocal import *
+from mainCartographie import *
 
 def mainIHM():
     global last_menu, langue
@@ -108,10 +110,8 @@ def modeManuel():
     img_car = PhotoImage(file=str(path_img) + "car_button.png").subsample(8, 8)
     btn_car.config(image=img_car)
     btn_car.place(x=87+xarrow, y=-170+yarrow)
-    if(langue=='FR'):
-        text_car = Label(IHM, text="Connexion\npour flèches")
-    elif(langue=='EN'):
-        text_car = Label(IHM, text="Connection\nfor arrows")
+    if(langue=='FR'):   text_car = Label(IHM, text="Connexion\npour flèches")
+    elif(langue=='EN'): text_car = Label(IHM, text="Connection\nfor arrows")
     text_car.place(x=119+xarrow, y=-210+yarrow)
 
     btn_up = Button(IHM, command=cmd_test, bg=None)
@@ -137,22 +137,26 @@ def modeManuel():
     btn_clavier = Button(IHM, command=commandeManuelClavier, bg=None)
     img_clavier = PhotoImage(file=str(path_img) + "clavier_button.png").subsample(4, 4)
     btn_clavier.config(image=img_clavier)
-    btn_clavier.place(x=600, y=100)
-    if(langue=='FR'):
-        text_car = Label(IHM, text="Connexion\npour clavier")
-    elif(langue=='EN'):
-        text_car = Label(IHM, text="Connection\nfor keyboard")
-    text_car.place(x=631, y=235)
+    btn_clavier.place(x=600, y=130)
+    if(langue=='FR'):   text_clavier = Label(IHM, text="Connexion\npour clavier")
+    elif(langue=='EN'): text_clavier = Label(IHM, text="Connection\nfor keyboard")
+    text_clavier.place(x=631, y=265)
 
-    btn_manette = Button(IHM, command=commandeManuelManette, bg=None)
-    img_manette = PhotoImage(file=str(path_img) + "manette_button.png").subsample(4, 4)
-    btn_manette.config(image=img_manette)
-    btn_manette.place(x=600, y=360)
-    if(langue=='FR'):
-        text_manette = Label(IHM, text="Connexion\npour manette")
-    elif(langue=='EN'):
-        text_manette = Label(IHM, text="Connection\nfor controller")
-    text_manette.place(x=630, y=500)
+    btn_ps5 = Button(IHM, command=main_manette_ps5, bg=None)
+    img_ps5 = PhotoImage(file=str(path_img) + "manette_button.png").subsample(4, 4)
+    btn_ps5.config(image=img_ps5)
+    btn_ps5.place(x=500, y=360)
+    if(langue=='FR'):   text_ps5 = Label(IHM, text="Connexion pour\nmanette PS5")
+    elif(langue=='EN'): text_ps5 = Label(IHM, text="Connection for\nPS5 controller")
+    text_ps5.place(x=524, y=500)
+
+    btn_xbox = Button(IHM, command=main_manette_xbox, bg=None)
+    img_xbox = PhotoImage(file=str(path_img) + "manette_button.png").subsample(4, 4)
+    btn_xbox.config(image=img_xbox)
+    btn_xbox.place(x=700, y=360)
+    if(langue=='FR'):   text_xbox = Label(IHM, text="Connexion pour\nmanette XboX")
+    elif(langue=='EN'): text_xbox = Label(IHM, text="Connection for\nXboX controller")
+    text_xbox.place(x=724, y=500)
 
     IHM.mainloop()
 ##########
@@ -194,7 +198,23 @@ def modeVocal():
 
     transcription_vocal = Text(IHM, bg=None, height=33, width=55)
     transcription_vocal.place(x=300, y=35)
-    transcription_vocal.config(state=DISABLED)
+
+    last_transcription = [""]
+    def update_transcription():
+        atm_transcription = get_transcription()
+        if atm_transcription != last_transcription[0] and atm_transcription is not None:
+            transcription_vocal.config(state=NORMAL)
+            transcription_vocal.insert(END, atm_transcription + "\n")
+            num_lines = int(transcription_vocal.index('end-1c').split('.')[0])
+            if num_lines > 33:
+                transcription_vocal.delete("1.0", "2.0")
+            if num_lines >= 34:
+                transcription_vocal.see("end")
+            transcription_vocal.config(state=DISABLED)
+            last_transcription[0] = atm_transcription
+        transcription_vocal.after(300, update_transcription)
+
+    update_transcription()
 
     IHM.mainloop()
 ##########
@@ -249,6 +269,7 @@ def modeCarto():
 
     refresh()
     last_menu = "carto"
+    main_carto()
 
     btn_flag = Button(IHM, command=language_change, bg=None)
     if(langue == 'FR'): img_flag = PhotoImage(file=str(path_img) + "fr_flag.png").subsample(4, 4)
@@ -327,7 +348,7 @@ def modeImage():
     elif(langue=='EN'):
         text_return = Label(IHM, text="Back to\nmain menu")
         text_return.place(x=30, y=105)
-    
+
     # Images 16/9 1920x1080
     image = "/home/xxneonmain69xx/PFR/images/Image1.png"
     img = Image.open(image).resize((747,420), Image.Resampling.LANCZOS)

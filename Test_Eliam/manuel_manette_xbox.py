@@ -13,8 +13,9 @@ envoyer_commande = True
 vitesse = 200
 arreter = False
 
-# Seuil pour les gâchettes
+# Seuils
 TRIGGER_THRESHOLD = 0.5
+JOYSTICK_THRESHOLD = 0.5
 
 mappings = {
     0: 'a',  # A => augmenter vitesse
@@ -45,27 +46,44 @@ def boucle_manette():
         pygame.event.pump()
         boutons_actuels = set()
 
+        # Boutons classiques
         for btn_index, cmd in mappings.items():
             if joystick.get_button(btn_index):
                 boutons_actuels.add(cmd)
-        
-        # Détection du bouton Start
+
+        # Détection du bouton Start pour arrêter le programme
         if joystick.get_button(START_BUTTON_INDEX):
             print("Bouton Start détecté. Arrêt du programme.")
+            print("Veuillez attendre 5 sec que la déconnexion se fasse")
             arreter = True
             break
 
-        # Gâchette (axe 5)
+        # Gâchette
         if joystick.get_axis(5) > TRIGGER_THRESHOLD:
             boutons_actuels.add('z')
 
-        # Croix directionnelle
+        # Croix directionnelle (HAT)
         hat = joystick.get_hat(0)
         if hat == (1, 0):
-            boutons_actuels.add('d')  # droite
+            boutons_actuels.add('d')
         elif hat == (-1, 0):
-            boutons_actuels.add('q')  # gauche
+            boutons_actuels.add('q')
 
+        # Joystick gauche
+        axe_horizontal = joystick.get_axis(0)
+        axe_vertical = joystick.get_axis(1)
+
+        if axe_horizontal > JOYSTICK_THRESHOLD:
+            boutons_actuels.add('d')
+        elif axe_horizontal < -JOYSTICK_THRESHOLD:
+            boutons_actuels.add('q')
+
+        if axe_vertical < -JOYSTICK_THRESHOLD:
+            boutons_actuels.add('z')
+        elif axe_vertical > JOYSTICK_THRESHOLD:
+            boutons_actuels.add('s')
+
+        # Si une commande est détectée
         if boutons_actuels:
             commande_actuelle = list(boutons_actuels)[0]
             commande_partagee = commande_actuelle
@@ -75,10 +93,7 @@ def boucle_manette():
                 commande_partagee = 'x'
                 envoyer_commande = True
 
-        envoyer_commande = True
-
         time.sleep(0.05)
-
 
 async def boucle_ble():
     global commande_partagee, envoyer_commande, vitesse, arreter
@@ -90,11 +105,10 @@ async def boucle_ble():
             return
         print("Connecté au module HM-10")
 
-        while True:
+        while not arreter:
             if envoyer_commande:
                 try:
                     cmd = commande_partagee
-
                     await client.write_gatt_char(UART_CHAR_UUID, (cmd + "\n").encode())
 
                     if cmd == 'a':
@@ -129,9 +143,9 @@ def run_asyncio_loop():
     arreter = True
     thread_manette.join()
     pygame.quit()
+    print("Programme stoppé !")
 
-def commandeManuelManette():
+def main_manette_xbox():
     reinitialiser_etat()
     thread = threading.Thread(target=run_asyncio_loop)
     thread.start()
-    return 0
