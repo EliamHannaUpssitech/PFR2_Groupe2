@@ -165,14 +165,14 @@ def carac_obj():
 
     print("taille image : " + str(height) + ", " + str(width))
     print([formeObjets, colorObjets, positionObjets, nbObjets])
-    
+    #"""
     cv2.imshow("IMG_ + str(i)", img_color)
     cv2.waitKey(0)
-    
+    #"""
     # NOMBRE D'OBJETS : nbObjets
     # FORME : forme = [obj1, obj2, ...]
     # COULEUR : colorObjets = [obj1, obj2, ...] -> objX = [R, G, B]
     # POSITION : positionObjets = [obj1, obj2, ...] -> objX = [posX, posY]
     return([formeObjets, colorObjets, positionObjets, nbObjets])
-
+#carac_obj()
 
