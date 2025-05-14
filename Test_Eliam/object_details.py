@@ -8,7 +8,6 @@ def detect_color_hsv(img_hsv):
     masks = {}
 
     # ----------- ROUGE -----------
-    # Rouge clair à foncé + Orange foncé
     lower_orange_red = np.array([0, 100, 50])
     upper_orange_red = np.array([10, 255, 255])
     lower_red = np.array([160, 100, 50])
@@ -16,17 +15,19 @@ def detect_color_hsv(img_hsv):
     mask_red = cv2.inRange(img_hsv, lower_orange_red, upper_orange_red) | cv2.inRange(img_hsv, lower_red, upper_red)
     masks['Rouge'] = mask_red
 
-    # ----------- ORANGE JAUNE -----------
-    # Jaune clair à foncé à orange clair
-    lower_yellow = np.array([15, 100, 50])
-    upper_yellow = np.array([25, 255, 255])
-    lower_orange = np.array([25, 100, 50])
-    upper_orange = np.array([35, 255, 255])
-    mask_yellow = cv2.inRange(img_hsv, lower_yellow, upper_yellow) | cv2.inRange(img_hsv, lower_orange, upper_orange)
+    # ----------- ORANGE -----------
+    lower_orange = np.array([10, 100, 50])
+    upper_orange = np.array([25, 255, 255])
+    mask_orange = cv2.inRange(img_hsv, lower_orange, upper_orange)
+    masks['Orange'] = mask_orange
+
+    # ----------- JAUNE -----------
+    lower_yellow = np.array([25, 100, 50])
+    upper_yellow = np.array([35, 255, 255])
+    mask_yellow = cv2.inRange(img_hsv, lower_yellow, upper_yellow)
     masks['Jaune'] = mask_yellow
 
     # ----------- VERT -----------
-    # Vert clair à foncé
     lower_light_green = np.array([36, 100, 50])
     upper_light_green = np.array([54, 255, 255])
     lower_dark_green = np.array([55, 100, 50])
@@ -35,7 +36,6 @@ def detect_color_hsv(img_hsv):
     masks['Vert'] = mask_green
 
     # ----------- BLEU -----------
-    # Bleu très clair à bleu foncé (incluant cyan)
     lower_very_light_blue = np.array([80, 10, 180])
     upper_very_light_blue = np.array([100, 80, 255])
     lower_cyan = np.array([80, 100, 100])
@@ -51,6 +51,12 @@ def detect_color_hsv(img_hsv):
         cv2.inRange(img_hsv, lower_dark_blue, upper_dark_blue))
     masks['Bleu'] = mask_blue
 
+    # ----------- VIOLET -----------
+    lower_violet = np.array([130, 50, 50])
+    upper_violet = np.array([160, 255, 255])
+    mask_violet = cv2.inRange(img_hsv, lower_violet, upper_violet)
+    masks['Violet'] = mask_violet
+
     detected = []
 
     for color, mask in masks.items():
@@ -61,6 +67,7 @@ def detect_color_hsv(img_hsv):
         detected.append('Inconnue')
 
     return detected
+
 
 def carac_obj():
 
