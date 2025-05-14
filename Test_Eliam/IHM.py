@@ -9,6 +9,7 @@ from vocal import *
 from mainCartographie import *
 from deplacement_libre import *
 from trouver_objet import *
+from manuel_arrow import *
 
 def mainIHM():
     global last_menu, langue
@@ -108,7 +109,7 @@ def modeManuel():
         text_return = Label(IHM, text="Back to\nmain menu")
         text_return.place(x=30, y=105)
 
-    btn_car = Button(IHM, command=cmd_test, bg=None)
+    btn_car = Button(IHM, command=cmd_arrow, bg=None)
     img_car = PhotoImage(file=str(path_img) + "car_button.png").subsample(8, 8)
     btn_car.config(image=img_car)
     btn_car.place(x=87+xarrow, y=-170+yarrow)
@@ -116,6 +117,7 @@ def modeManuel():
     elif(langue=='EN'): text_car = Label(IHM, text="Connection\nfor arrows")
     text_car.place(x=119+xarrow, y=-210+yarrow)
 
+    """
     btn_up = Button(IHM, command=cmd_test, bg=None)
     img_up = PhotoImage(file=str(path_img) + "Up_button.png").subsample(5, 5)
     btn_up.config(image=img_up)
@@ -135,6 +137,7 @@ def modeManuel():
     img_right = PhotoImage(file=str(path_img) + "Right_button.png").subsample(5, 5)
     btn_right.config(image=img_right)
     btn_right.place(x=200+xarrow, y=100+yarrow)
+    """
 
     btn_clavier = Button(IHM, command=commandeManuelClavier, bg=None)
     img_clavier = PhotoImage(file=str(path_img) + "clavier_button.png").subsample(4, 4)
@@ -332,13 +335,36 @@ def modeTrajet():
         text_return = Label(IHM, text="Back to\nmain menu")
         text_return.place(x=30, y=105)
 
-    btn_trajet = Button(IHM, command=main_trouver_objet, bg=None)
-    img_trajet = PhotoImage(file=str(path_img) + "trajet_button.png").subsample(2, 2)
+    if(langue=='FR'):   couleurs = ["Bleu", "Violet", "Vert", "Jaune", "Orange", "Rouge"]
+    elif(langue=='EN'): couleurs = ["Blue", "Purple", "Green", "Yellow", "Orange", "Red"]
+    couleur_selectionnee = StringVar()
+    couleur_selectionnee.set(couleurs[0])
+    menu = OptionMenu(IHM, couleur_selectionnee, *couleurs)
+    menu.place(x=243, y=280)
+
+    def trouve_objet_couleur():
+        couleur_act = couleur_selectionnee.get()
+        print(f"Trouve la balle {couleur_act}")
+        if couleur_act == 'Bleu' or couleur_act == 'Blue':
+            TO_bleu()
+        elif couleur_act == 'Violet' or couleur_act == 'Purple':
+            TO_violet()
+        elif couleur_act == 'Vert' or couleur_act == 'Green':
+            TO_vert()
+        elif couleur_act == 'Jaune' or couleur_act == 'Yellow':
+            TO_jaune()
+        elif couleur_act == 'Orange' or couleur_act == 'Orange':
+            TO_orange()
+        elif couleur_act == 'Rouge' or couleur_act == 'Red':
+            TO_rouge()
+
+    btn_trajet = Button(IHM, command=trouve_objet_couleur, bg=None)
+    img_trajet = PhotoImage(file=str(path_img) + "trajet_button.png").subsample(5, 5)
     btn_trajet.config(image=img_trajet)
-    btn_trajet.place(x=543, y=280)
+    btn_trajet.place(x=543, y=250)
     if(langue=='FR'):   text_trajet = Label(IHM, text="Mode Trajet")
     elif(langue=='EN'): text_trajet = Label(IHM, text="Travel Mode")
-    text_trajet.place(x=603, y=470)
+    text_trajet.place(x=546, y=330)
 
     IHM.mainloop()
 ##########
@@ -390,8 +416,8 @@ def modeImage():
             if cac[1][obj] == 'Jaune':      couleur_act = 'Yellow'
             if cac[1][obj] == 'Rouge':      couleur_act = 'Red'
             if cac[1][obj] == 'Bleu':       couleur_act = 'Blue'
-            if cac[1][obj] == 'Orange':      couleur_act = 'Orange'
-            if cac[1][obj] == 'Violet':       couleur_act = 'Purple'
+            if cac[1][obj] == 'Orange':     couleur_act = 'Orange'
+            if cac[1][obj] == 'Violet':     couleur_act = 'Purple'
             text_image.insert(str(obj+1) + ".0", "Object " + str(obj+1) + " : " + str(couleur_act) + " " + str(objet_act) + "\n")
     text_image.config(state=DISABLED)
 

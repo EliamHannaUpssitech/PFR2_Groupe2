@@ -58,81 +58,113 @@ async def trouver_objet(couleur_cible):
 
         await envoyer(client, 'm')
         await envoyer(client, 'x')
-
-        for tentative in range(5):
-            print(f"\nTentative {tentative+1}/5 - Analyse camera...")
-            take_picture()
-
-            if couleur_cible in couleurs:
-                index = couleurs.index(couleur_cible)
-                x = positions[index][0]
-                print(f"Objet {couleur_cible} detecte a x = {x}")
-
-                # Centrage initial
-                centre = await recentrer_objet(client, couleur_cible, 1, 6)
-                if not centre:
-                    continue
-
-                # Avance jusqu’a 50 cm
-                await envoyer(client, 'v')
-                await asyncio.sleep(2.5)
-                await envoyer(client, 'm')
-                await envoyer(client, 'x')
-
-                # Recentrage a nouveau
-                print("Recentrage après avancee...")
+        trouve = False
+        while not trouve:
+            for tentative in range(5):
+                print(f"\nTentative {tentative+1}/5 - Analyse camera...")
                 take_picture()
-                await asyncio.sleep(2)
-                centre = await recentrer_objet(client, couleur_cible, 2, 2)
-                if not centre:
-                    continue
-                """
-                # Avance jusqu'a 25 cm
-                await envoyer(client, 'i')
-                await asyncio.sleep(2.5)
-                await envoyer(client, 'm')
-                await envoyer(client, 'x')
 
-                # Recentrage a nouveau
-                print("Recentrage après avancee...")
-                take_picture()
-                await asyncio.sleep(2)
-                centre = await recentrer_objet(client, couleur_cible, 4, 4)
-                if not centre:
-                    continue
-                """
-                # Approche lente
-                print("Approche finale lente...")
-                await envoyer(client, 'w')
-                await asyncio.sleep(2.5)
-                await envoyer(client, 'm')
-                await envoyer(client, 'x')
+                if couleur_cible in couleurs:
+                    index = couleurs.index(couleur_cible)
+                    x = positions[index][0]
+                    print(f"Objet {couleur_cible} detecte a x = {x}")
 
-                print("Objet atteint avec succès.")
-                return
+                    # Centrage initial
+                    centre = await recentrer_objet(client, couleur_cible, 1, 6)
+                    if not centre:
+                        continue
 
-            else:
-                print(f"Objet {couleur_cible} non visible. Rotation droite.")
-                await envoyer(client, 'n')
-                await asyncio.sleep(0.6)
-                await envoyer(client, 'x')
+                    # Avance jusqu’a 50 cm
+                    await envoyer(client, 'v')
+                    await asyncio.sleep(2.5)
+                    await envoyer(client, 'm')
+                    await envoyer(client, 'x')
 
-        print("echec : Objet non trouve après 5 tentatives. Mode libre.")
-        #await envoyer(client, 'o')
-        #await asyncio.sleep(20)
-        await envoyer(client, 'm')
-        await envoyer(client, 'x')
+                    # Recentrage a nouveau
+                    print("Recentrage après avancee...")
+                    take_picture()
+                    await asyncio.sleep(2)
+                    centre = await recentrer_objet(client, couleur_cible, 2, 2)
+                    if not centre:
+                        continue
+
+                    # Approche lente
+                    print("Approche finale lente...")
+                    await envoyer(client, 'w')
+                    await asyncio.sleep(2.5)
+                    await envoyer(client, 'm')
+                    await envoyer(client, 'x')
+
+                    print("Objet atteint avec succès.")
+                    trouve = True
+                    return
+
+                else:
+                    print(f"Objet {couleur_cible} non visible. Rotation droite.")
+                    await envoyer(client, 'n')
+                    await asyncio.sleep(0.6)
+                    await envoyer(client, 'x')
+
+            print("echec : Objet non trouve après 5 tentatives. Mode libre.")
+            await envoyer(client, 'o')
+            await asyncio.sleep(5)
+            await envoyer(client, 'm')
+            await envoyer(client, 'x')
 
 def take_picture():
     global formes, couleurs, positions, nb
     infos = carac_obj()
     formes, couleurs, positions, nb = infos[0], infos[1], infos[2], infos[3]
 
-def run_asyncio_loop():
+# Couleurs ------------------------------
+
+def TO_orange():
+    thread = threading.Thread(target=run_asyncio_loop_orange)
+    thread.start()
+def run_asyncio_loop_orange():
     couleur_cible = "Orange"
     asyncio.run(trouver_objet(couleur_cible))
     print("Programme stoppé !")
 
-def main_trouver_objet():
-    thread = threading.Thread(target=run_asyncio_loop)
+def TO_jaune():
+    thread = threading.Thread(target=run_asyncio_loop_jaune)
     thread.start()
+def run_asyncio_loop_jaune():
+    couleur_cible = "Jaune"
+    asyncio.run(trouver_objet(couleur_cible))
+    print("Programme stoppé !")
+
+def TO_rouge():
+    thread = threading.Thread(target=run_asyncio_loop_rouge)
+    thread.start()
+def run_asyncio_loop_rouge():
+    couleur_cible = "Rouge"
+    asyncio.run(trouver_objet(couleur_cible))
+    print("Programme stoppé !")
+
+def TO_vert():
+    thread = threading.Thread(target=run_asyncio_loop_vert)
+    thread.start()
+def run_asyncio_loop_vert():
+    couleur_cible = "Vert"
+    asyncio.run(trouver_objet(couleur_cible))
+    print("Programme stoppé !")
+
+def TO_bleu():
+    thread = threading.Thread(target=run_asyncio_loop_bleu)
+    thread.start()
+def run_asyncio_loop_bleu():
+    couleur_cible = "Bleu"
+    asyncio.run(trouver_objet(couleur_cible))
+    print("Programme stoppé !")
+
+def TO_violet():
+    thread = threading.Thread(target=run_asyncio_loop_violet)
+    thread.start()
+def run_asyncio_loop_violet():
+    couleur_cible = "Violet"
+    asyncio.run(trouver_objet(couleur_cible))
+    print("Programme stoppé !")
+
+##
+#
