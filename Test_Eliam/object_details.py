@@ -117,7 +117,7 @@ def carac_obj():
                 perimeter = cv2.arcLength(contour, True)
                 circularity = (4 * np.pi * area) / (perimeter ** 2)
                 if 0.55 <= circularity <= 1.45:
-                    shape_name = "Cercle"
+                    shape_name = "Balle"
                     objet = True
             else:
                 objet = False
@@ -165,10 +165,10 @@ def carac_obj():
 
     print("taille image : " + str(height) + ", " + str(width))
     print([formeObjets, colorObjets, positionObjets, nbObjets])
-    #"""
+    """
     cv2.imshow("IMG_ + str(i)", img_color)
     cv2.waitKey(0)
-    #"""
+    """
     # NOMBRE D'OBJETS : nbObjets
     # FORME : forme = [obj1, obj2, ...]
     # COULEUR : colorObjets = [obj1, obj2, ...] -> objX = [R, G, B]

@@ -7,6 +7,7 @@ from manuel_manette_ps5 import *
 from manuel_manette_xbox import *
 from vocal import *
 from mainCartographie import *
+from deplacement_libre import *
 
 def mainIHM():
     global last_menu, langue
@@ -249,18 +250,29 @@ def modeAutom():
     btn_carto = Button(IHM, command=modeCarto, bg=None)
     img_carto = PhotoImage(file=str(path_img) + "carto_button.png").subsample(3, 3)
     btn_carto.config(image=img_carto)
-    btn_carto.place(x=183, y=186)
+    btn_carto.place(x=173, y=286)
     if(langue=='FR'):   text_carto = Label(IHM, text="Mode Cartographie")
     elif(langue=='EN'): text_carto = Label(IHM, text="Cartography Mode")
-    text_carto.place(x=218, y=370)
+    text_carto.place(x=208, y=470)
 
     btn_trajet = Button(IHM, command=modeTrajet, bg=None)
     img_trajet = PhotoImage(file=str(path_img) + "trajet_button.png").subsample(2, 2)
     btn_trajet.config(image=img_trajet)
-    btn_trajet.place(x=533, y=180)
+    btn_trajet.place(x=543, y=280)
     if(langue=='FR'):   text_trajet = Label(IHM, text="Mode Trajet")
     elif(langue=='EN'): text_trajet = Label(IHM, text="Travel Mode")
-    text_trajet.place(x=593, y=370)
+    text_trajet.place(x=603, y=470)
+
+    btn_libre = Button(IHM, command=cmd_deplacement_libre, bg=None)
+    img_libre = PhotoImage(file=str(path_img) + "libre_button.png").subsample(5, 5)
+    btn_libre.config(image=img_libre)
+    btn_libre.place(x=395, y=150)
+    if(langue=='FR'):
+        text_libre = Label(IHM, text="Déplacement libre")
+        text_libre.place(x=398, y=260)
+    elif(langue=='EN'):
+        text_libre = Label(IHM, text="Free movement")
+        text_libre.place(x=403, y=260)
 
     IHM.mainloop()
 
@@ -324,7 +336,7 @@ def modeTrajet():
 
 # IMAGE ------------------------------
 def modeImage():
-    global last_menu, langue
+    global last_menu, langue, cac
     
     refresh()
     last_menu = "image"
@@ -349,8 +361,6 @@ def modeImage():
         text_return = Label(IHM, text="Back to\nmain menu")
         text_return.place(x=30, y=105)
 
-    cac = carac_obj()
-
     # Images 16/9 1920x1080
     image = "\\\\172.20.10.9\Partage\images\Image1.png"
     img = Image.open(image).resize((747,420), Image.Resampling.LANCZOS)
@@ -362,10 +372,19 @@ def modeImage():
     text_image = Text(IHM, bg=None, height=6, width=70)
     text_image.place(x=150, y=25)
     for obj in range(cac[3]):
-        text_image.insert(str(obj+1) + ".0", "Objet " + str(obj+1) + " : " + str(cac[0][obj]) + " " + str(cac[1][obj]) + "\n")
+        if langue == 'FR':
+            text_image.insert(str(obj+1) + ".0", "Objet " + str(obj+1) + " : " + str(cac[0][obj]) + " " + str(cac[1][obj]) + "\n")
+        elif langue == 'EN':
+            if cac[0][obj] == 'Balle':      objet_act = 'Ball'
+            if cac[0][obj] == 'Rectangle':  objet_act = 'Cube'
+            if cac[1][obj] == 'Vert':       couleur_act = 'Green'
+            if cac[1][obj] == 'Jaune':      couleur_act = 'Yellow'
+            if cac[1][obj] == 'Rouge':      couleur_act = 'Red'
+            if cac[1][obj] == 'Bleu':       couleur_act = 'Blue'
+            text_image.insert(str(obj+1) + ".0", "Object " + str(obj+1) + " : " + str(couleur_act) + " " + str(objet_act) + "\n")
     text_image.config(state=DISABLED)
 
-    btn_rldimage = Button(IHM, command=modeImage, bg=None)
+    btn_rldimage = Button(IHM, command=reload_image, bg=None)
     img_rldimage = PhotoImage(file=str(path_img) + "image_button.png").subsample(7, 7)
     btn_rldimage.config(image=img_rldimage)
     btn_rldimage.place(x=798, y=505)
@@ -374,6 +393,12 @@ def modeImage():
     text_rldimage.place(x=788, y=485)
 
     IHM.mainloop()
+
+def reload_image():
+    global cac
+    cac = carac_obj()
+    modeImage()
+
 
 # HELP ------------------------------
 def modeHelp():
@@ -492,6 +517,7 @@ def cmd_test():
 langue = "FR"
 last_menu = "main"
 path_img = "Test_Eliam/images_IHM/"
+cac = [[],[],[],0]
 
 # Début du programme
 IHM = Tk()
