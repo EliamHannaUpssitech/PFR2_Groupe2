@@ -314,10 +314,10 @@ def modeCarto():
         text_return.place(x=30, y=105)
 
     def demarrer_carto():
-        os.system('ssh xxneonmain69xx@172.20.10.9 "python3 /home/xxneonmain69xx/PFR/mainCartographie.py"')
+        os.system('ssh xxneonmain69xx@172.20.10.3 "python3 /home/xxneonmain69xx/PFR/mainCartographie.py"')
         os.system('exit')
         time.sleep(3)
-        cartographie = "\\\\172.20.10.9\Partage\ma_Cartographie.png"
+        cartographie = "\\\\172.20.10.3\Partage\ma_Cartographie.png"
         img = Image.open(cartographie).resize((800,800), Image.Resampling.LANCZOS)
         image_affichee = ImageTk.PhotoImage(img)
         image_analysee = Label(IHM,image=image_affichee)
@@ -424,7 +424,7 @@ def modeImage():
         text_return.place(x=30, y=105)
 
     # Images 16/9 1920x1080
-    image = "\\\\172.20.10.9\Partage\images\Image1.png"
+    image = "\\\\172.20.10.3\Partage\images\Image1.png"
     img = Image.open(image).resize((747,420), Image.Resampling.LANCZOS)
 
     image_affichee = ImageTk.PhotoImage(img)
