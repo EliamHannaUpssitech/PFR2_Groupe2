@@ -313,6 +313,27 @@ def modeCarto():
         text_return = Label(IHM, text="Back to\nmain menu")
         text_return.place(x=30, y=105)
 
+    def demarrer_carto():
+        os.system('ssh xxneonmain69xx@172.20.10.9 "python3 /home/xxneonmain69xx/PFR/mainCartographie.py"')
+        os.system('exit')
+        time.sleep(3)
+        cartographie = "\\\\172.20.10.9\Partage\ma_Cartographie.png"
+        img = Image.open(cartographie).resize((800,800), Image.Resampling.LANCZOS)
+        image_affichee = ImageTk.PhotoImage(img)
+        image_analysee = Label(IHM,image=image_affichee)
+        image_analysee.place(x=543, y=145)
+
+    btn_carto = Button(IHM, command=demarrer_carto, bg=None)
+    img_carto = PhotoImage(file=str(path_img) + "carto_button.png").subsample(3, 3)
+    btn_carto.config(image=img_carto)
+    btn_carto.place(x=173, y=286)
+    if(langue=='FR'):
+        text_carto = Label(IHM, text="Démarrer Cartographie")
+        text_carto.place(x=201, y=470)
+    elif(langue=='EN'):
+        text_carto = Label(IHM, text="Start Cartography")
+        text_carto.place(x=208, y=470)
+
     IHM.mainloop()
 
 def modeTrajet():
