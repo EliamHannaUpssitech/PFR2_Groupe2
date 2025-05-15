@@ -112,10 +112,10 @@ async def boucle_ble():
                     await client.write_gatt_char(UART_CHAR_UUID, (cmd + "\n").encode())
 
                     if cmd == 'a':
-                        vitesse = min(255, vitesse + 25)
+                        vitesse = min(255, vitesse + 15)
                         print(f"[+ Vitesse] => {vitesse}")
                     elif cmd == 'e':
-                        vitesse = max(0, vitesse - 25)
+                        vitesse = max(0, vitesse - 15)
                         print(f"[- Vitesse] => {vitesse}")
                     elif cmd == 'x':
                         print(f"[Repos] => x")

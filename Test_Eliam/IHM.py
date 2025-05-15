@@ -291,7 +291,6 @@ def modeCarto():
 
     refresh()
     last_menu = "carto"
-    main_carto()
 
     btn_flag = Button(IHM, command=language_change, bg=None)
     if(langue == 'FR'): img_flag = PhotoImage(file=str(path_img) + "fr_flag.png").subsample(4, 4)
@@ -423,13 +422,24 @@ def modeImage():
         text_return = Label(IHM, text="Back to\nmain menu")
         text_return.place(x=30, y=105)
 
-    # Images 16/9 1920x1080
-    image = "\\\\172.20.10.3\Partage\images\Image1.png"
-    img = Image.open(image).resize((747,420), Image.Resampling.LANCZOS)
+    btn_rldimage = Button(IHM, command=reload_image, bg=None)
+    img_rldimage = PhotoImage(file=str(path_img) + "image_button.png").subsample(7, 7)
+    btn_rldimage.config(image=img_rldimage)
+    btn_rldimage.place(x=798, y=505)
+    if(langue=='FR'):   text_rldimage = Label(IHM, text="Recharger l'image")
+    elif(langue=='EN'): text_rldimage = Label(IHM, text="Reload the picture")
+    text_rldimage.place(x=788, y=485)
 
-    image_affichee = ImageTk.PhotoImage(img)
-    image_analysee = Label(IHM,image=image_affichee)
-    image_analysee.place(x=25, y=145)
+    # Images 16/9 1920x1080
+    try:
+        image = "\\\\172.20.10.3\Partage\images\Image1.png"
+        img = Image.open(image).resize((747,420), Image.Resampling.LANCZOS)
+
+        image_affichee = ImageTk.PhotoImage(img)
+        image_analysee = Label(IHM,image=image_affichee)
+        image_analysee.place(x=25, y=145)
+    except:
+        print("Image non-trouvée")
 
     text_image = Text(IHM, bg=None, height=6, width=70)
     text_image.place(x=150, y=25)
@@ -447,14 +457,6 @@ def modeImage():
             if cac[1][obj] == 'Violet':     couleur_act = 'Purple'
             text_image.insert(str(obj+1) + ".0", "Object " + str(obj+1) + " : " + str(couleur_act) + " " + str(objet_act) + "\n")
     text_image.config(state=DISABLED)
-
-    btn_rldimage = Button(IHM, command=reload_image, bg=None)
-    img_rldimage = PhotoImage(file=str(path_img) + "image_button.png").subsample(7, 7)
-    btn_rldimage.config(image=img_rldimage)
-    btn_rldimage.place(x=798, y=505)
-    if(langue=='FR'):   text_rldimage = Label(IHM, text="Recharger l'image")
-    elif(langue=='EN'): text_rldimage = Label(IHM, text="Reload the picture")
-    text_rldimage.place(x=788, y=485)
 
     IHM.mainloop()
 

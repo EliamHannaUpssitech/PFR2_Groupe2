@@ -84,7 +84,7 @@ async def trouver_objet(couleur_cible):
                     print("Recentrage après avancee...")
                     take_picture()
                     await asyncio.sleep(2)
-                    centre = await recentrer_objet(client, couleur_cible, 2, 2)
+                    centre = await recentrer_objet(client, couleur_cible, 2, 4)
                     if not centre:
                         continue
 
