@@ -19,7 +19,7 @@ def decouper_en_commandes(transcription):
 def extraire_commandes(sous_phrase):
     tokens = normaliser_transcription(sous_phrase)
     commandes = []
-    duree = 0.55  # durée par défaut
+    duree = 0.50  # durée par défaut
 
     for i, token in enumerate(tokens):
         if token in ["avance", "avancer", "forward"]:
@@ -50,7 +50,7 @@ def extraire_commandes(sous_phrase):
             if i + 4 < len(tokens) and tokens[i + 3] == "de":
                 try:
                     angle = float(tokens[i + 4].replace("°", "").replace(",", "."))
-                    duree = angle / 190
+                    duree = angle / 180
                 except ValueError:
                     pass
 
@@ -59,7 +59,7 @@ def extraire_commandes(sous_phrase):
 
         elif token in ["demi-tour", "demitour", "retourne", "retourner", "half turn"]:
             commandes.append("f")
-            duree = duree * 2  # 180°
+            duree = duree * 2.5  # 180°
 
         elif token in ["augmente", "accélère", "accelere", "speed"]:
             commandes.append("a")
