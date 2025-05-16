@@ -9,10 +9,14 @@ from bleak import BleakClient
 import keyboard
 import os
 
+# Fonction cartographie (non implémenté, ne tourne que sur l'arduino directement)
+# Fonctionnement :
+#   Le programme scanne d'abord la pièce puis lance le mode automatique jusqu'à trouver un mur en face de lui et relance le scan
+#   Les différents scans sont ensuite mis ensemble pour reformer l'image de la pièce
+
 def main_carto():
     listDeplacement=[]
     CarteGlobale=[]
-    distance_capteur_avant=300              # oublie pas de le supp
     delay = 0.1  # Délai entre les vérifications clavier pour envoieDemande fonction
 
     def action():
@@ -292,25 +296,25 @@ def main_carto():
                                 await client.write_gatt_char(UART_CHAR_UUID, (commande + "\n").encode())
                                 derniere_commande = commande
                             except Exception as e:
-                                print(f"❌ Erreur BLE : {e}")
+                                print(f"Erreur BLE : {e}")
 
                         await asyncio.sleep(delay)
 
                 except KeyboardInterrupt:
-                    print("\n🛑 Arrêt par l'utilisateur.")
+                    print("\nArrêt par l'utilisateur.")
 
         if __name__ == "__main__":
             asyncio.run(main())
 
 
-    # distance_capteur_avant=envoi_demande("distance") #demande lylian comment faire                                                          #pas tester (1) attendre comment faire lylian pour recevoir la valeur de distance du capteur de devant
+    # distance_capteur_avant=envoi_demande("distance")                                                                          #pas tester (1) attendre comment faire lylian pour recevoir la valeur de distance du capteur de devant
     #angle_face_robot=init_lidar(distance_capteur_avant)
     angle_face_robot=0 
-    modeCarthographie=initCartographie()                                                                                    # tester (2) experimentalement (pas condition réel avec vrai donné (manque vrai distance capteur avant+distance_capteur_avant))
+    modeCarthographie=initCartographie()                                                                                        # tester (2) experimentalement (pas condition réel avec vrai donné (manque vrai distance capteur avant+distance_capteur_avant))
     while(modeCarthographie):                                                                                                               
         envoi_demande("deplacement")            # lance le déplacement libre                                                                #pas tester (1)
         for i in range(1) :   # fait tous les 10 mouvement à reflechir si 10
-            listDeplacement.append(calculDeplacement(angle_face_robot))                                                     # tester (2)  experimentalement (pas condition réel avec vrai donné (manque vrai vitesse de déplacement+vitesse de rotation+distance capteur avant+distance de sécurité)) 
+            listDeplacement.append(calculDeplacement(angle_face_robot))                                                         # tester (2)  experimentalement (pas condition réel avec vrai donné (manque vrai vitesse de déplacement+vitesse de rotation+distance capteur avant+distance de sécurité)) 
         envoi_demande("fin_deplacement")          # fini le déplacement libre                                                               #pas tester (1)
         CarteGlobale=carthographie_Lidar(CarteGlobale,listDeplacement)  # analyse Lidar + Traitement donnees Lidar + Mise a jour Carte      #fonctionne mais pas tester depuis maj
 

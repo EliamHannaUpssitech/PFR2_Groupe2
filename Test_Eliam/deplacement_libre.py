@@ -3,12 +3,17 @@ import keyboard
 from bleak import BleakClient
 import threading
 
+# Fonction déplacement libre
+# Fonctionnement :
+#   Tant que espace n'est pas appuyé, le programme lancera le mode automatique de l'arduino
+#   Le mode automatique avance jusqu'à un obstacle puis selon la place qu'il à sur ses cotés, choisi s'il tourne à gauche ou à droite avant de réavancer
+#   'x' ou 'm' mettent en pause le programme tant qu'ils sont appuyés
+
 HM10_ADDRESS = "D8:A9:8B:C4:5F:EC"
 UART_CHAR_UUID = "0000ffe1-0000-1000-8000-00805f9b34fb"
 
 delay = 0.1
 derniere_commande = None
-
 
 async def main_libre():
     print(f"Connexion a {HM10_ADDRESS}...")
@@ -31,14 +36,10 @@ async def main_libre():
                 await client.write_gatt_char(UART_CHAR_UUID, ('x\n').encode())
                 return
             
-            commande = 'o'  # Arrêt par défaut
+            commande = 'o'
 
-            if keyboard.is_pressed('s'):
-                commande = 's'
-            elif keyboard.is_pressed('m'):
+            if keyboard.is_pressed('m'):
                 commande = 'm'
-            #elif keyboard.is_pressed('o'):
-            #    commande = 'o'
             elif keyboard.is_pressed('x'):
                 commande = 'x'
 

@@ -1,16 +1,32 @@
+########################################
+#### Interface d'utilisation MYNSSL ####
+#### Créée par :                    ####
+####   - Eliam Hanna                ####
+####   - Lylian Violeau             ####
+####   - Thomas Morales             ####
+####   - Jean-Gabriel Frenoy        ####
+####   - Louis Clouet               ####
+####   - Samy Janati                ####
+########################################
+
+# Import Bibliothèques Python
 from tkinter import *
-from tkinter import ttk
 from PIL import Image, ImageTk
+
+# Import Codes annexes
 from object_details import *
 from manuel_clavier import *
 from manuel_manette_ps5 import *
 from manuel_manette_xbox import *
 from vocal import *
-from mainCartographie import *
 from deplacement_libre import *
 from trouver_objet import *
 from manuel_arrow import *
 
+
+# Fonctions de l'IHM (modes)
+
+# MENU ------------------------------
 def mainIHM():
     global last_menu, langue
 
@@ -78,6 +94,7 @@ def mainIHM():
     text_vocal.place(x=562, y=363)
 
     IHM.mainloop()
+##########
 
 # MANUEL ------------------------------
 def modeManuel():
@@ -286,7 +303,7 @@ def modeAutom():
 
     IHM.mainloop()
 
-def modeCarto():
+def modeCarto():               # Mode Autom -> Menu Démarrer Carthographie
     global last_menu, langue
 
     refresh()
@@ -335,7 +352,7 @@ def modeCarto():
 
     IHM.mainloop()
 
-def modeTrajet():
+def modeTrajet():               # Mode Autom -> Menu Trouver Objet
     global last_menu, langue
 
     refresh()
@@ -446,7 +463,7 @@ def modeImage():
     for obj in range(cac[3]):
         if langue == 'FR':
             text_image.insert(str(obj+1) + ".0", "Objet " + str(obj+1) + " : " + str(cac[0][obj]) + " " + str(cac[1][obj]) + "\n")
-        elif langue == 'EN':
+        elif langue == 'EN':                                                                                                        # Traduction
             if cac[0][obj] == 'Balle':      objet_act = 'Ball'
             if cac[0][obj] == 'Rectangle':  objet_act = 'Cube'
             if cac[1][obj] == 'Vert':       couleur_act = 'Green'
@@ -460,7 +477,7 @@ def modeImage():
 
     IHM.mainloop()
 
-def reload_image():
+def reload_image():     # Prise de l'image actuelle
     global cac
     cac = carac_obj()
     modeImage()
@@ -493,7 +510,7 @@ def modeHelp():
         text_return = Label(IHM, text="Back to\nmain menu")
         text_return.place(x=30, y=105)
 
-    if(langue=='FR'):
+    if(langue=='FR'):                   # Manuel Utilisation IHM Français
         text_help = Label(IHM, text=
                           "--( Bienvenue sur l'IHM : )--\n"
                           "\nMode Manuel :\n"
@@ -515,7 +532,7 @@ def modeHelp():
                           "\nMode Image :\n"
                           "- Analyser l'image actuelle : Lorsque le mode Image est lancé, le robot se charge de prendre en photo la scène en face de lui et analysera les objets" 
                           " \n(ici balles) et affichera l'ensemble de ceux-ci sur l'IHM.\n", justify=LEFT)
-    elif(langue=='EN'):
+    elif(langue=='EN'):                   # Manuel Utilisation IHM Anglais
         text_help = Label(IHM, text=
                           "--( Welcome to the HMI : )--\n"
                           "\nManual mode :\n"
@@ -543,11 +560,11 @@ def modeHelp():
 ##########
 
 # OTHERS & ADDONS ------------------------------
-def refresh():
+def refresh():                              # Supprime les éléments d'une page de l'IHM pour changer de menu (utile lors d'une entrée dans un menu)
     for widget in IHM.winfo_children():
         widget.destroy()
 
-def language_change():
+def language_change():                      # Change la langue de Français à Anglais
     global langue
     if(langue == "FR"):
         langue = "EN"
@@ -555,7 +572,7 @@ def language_change():
         langue = "FR"
     menuBack()
 
-def menuBack():
+def menuBack():                             # Garde en mémoire le menu précédent (utile pour retourner dans le menu d'avant)
     global last_menu
     if last_menu == "manuel":
         modeManuel()
@@ -574,7 +591,7 @@ def menuBack():
     else:
         mainIHM()
 
-def cmd_test():
+def cmd_test():                             # Commande de test lors de la création d'un bouton qui n'a pas encore d'implémentation
     print('commande test passée') 
 
 ###########################
@@ -588,7 +605,6 @@ cac = [[],[],[],0]
 # Début du programme
 IHM = Tk()
 IHM.geometry('900x600')
-#IHM.configure(bg="gray",relief="raised")
 
 mainIHM()
 

@@ -4,6 +4,12 @@ import speech_recognition as sr
 from bleak import BleakClient
 import threading
 
+# Fonction vocal
+# Fonctionnement :
+#   Connexion au robot, puis avec un micro on commandera le robot en Français ou en Anglais
+#   Le robot comprend des commandes simple ou complexes (suites de commandes simple séparées de 'et', 'puis', ...)
+#   Et comprend aussi des distances / angles (exemple : avance de 2m puis tourne à droite de 45°)
+
 # Adresse Bluetooth
 HM10_ADDRESS = "D8:A9:8B:C4:5F:EC"
 UART_CHAR_UUID = "0000ffe1-0000-1000-8000-00805f9b34fb"

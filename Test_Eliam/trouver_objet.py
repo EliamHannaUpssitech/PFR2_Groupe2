@@ -3,6 +3,13 @@ from bleak import BleakClient
 from object_details import *  # La fonction ne prend aucun argument
 import threading
 
+# Fonction trouver objet
+# Fonctionnement :
+#   Le robot va dans un premier temps tourner sur lui même pour trouver un objet de la couleur qu'il souhaite
+#   Une fois l'objet trouvé le robot va se recadrer afin d'être en face de celui-ci, puis faire un première approche
+#   Le robot va effectuer un second recadrage qui demande + de précision
+#   Une fois bien en fâce le robot va lancer une approche finale lente pour se positionner devant l'objet
+
 HM10_ADDRESS = "D8:A9:8B:C4:5F:EC"
 UART_CHAR_UUID = "0000ffe1-0000-1000-8000-00805f9b34fb"
 

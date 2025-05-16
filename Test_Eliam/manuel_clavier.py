@@ -3,7 +3,12 @@ import keyboard
 from bleak import BleakClient
 import threading
 
-HM10_ADDRESS = "D8:A9:8B:C4:5F:EC"#"F7B2E471-0B6C-B447-B9A7-8890E71BFFDB"
+# Fonction manuel clavier
+# Fonctionnement :
+#   Connexion au robot puis on utilise les touches 'z', 'q', 's', 'd' pour bouger le robot
+#   Les touches 'a' et 'e' permettent respectivement de diminuer et augmenter la vitesse
+
+HM10_ADDRESS = "D8:A9:8B:C4:5F:EC"
 UART_CHAR_UUID = "0000ffe1-0000-1000-8000-00805f9b34fb"
 
 delay = 0.1

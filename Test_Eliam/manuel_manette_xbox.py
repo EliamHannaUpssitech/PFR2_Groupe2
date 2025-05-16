@@ -4,6 +4,12 @@ from bleak import BleakClient
 import threading
 import time
 
+# Fonction manuel manette (ps5)
+# Fonctionnement :
+#   Connexion au robot puis utilisation du joystic pour bouger
+#   Les gachettes 'L2' et 'R2' permettent respectivement de reculer et d'avancer
+#   Les gachettes 'L1' et 'R1' permettent respectivement de diminuer et augmenter la vitesse
+
 # Adresse du module Bluetooth HM10
 HM10_ADDRESS = "D8:A9:8B:C4:5F:EC"
 UART_CHAR_UUID = "0000ffe1-0000-1000-8000-00805f9b34fb"

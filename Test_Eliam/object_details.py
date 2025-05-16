@@ -3,6 +3,15 @@ import numpy as np
 import os
 import time
 
+# Fonction manuel clavier
+# Fonctionnement :
+#   Prise de l'image grâce à l'arduino et la caméra puis flou sur l'image
+#   Détéction des contours et décision si l'objet est une balle, un cube ou autre
+#   Choix du centre de l'objet (moyenne position contours dans l'image)
+#   Moyenne de la couleur des pixels (rayon = 30px) à partir du centre
+#   Retourne une liste des objets présents ( [[Forme1, Forme2, Forme3],   [Couleur1n Couleur2, Couleur3],    [Position1, Position2, Position3],  nombre d'objets] )
+#   Position de l'objet = [position X, position Y]
+
 def detect_color_hsv(img_hsv):
     # Masques pour chaque couleur
     masks = {}
@@ -181,5 +190,6 @@ def carac_obj():
     # COULEUR : colorObjets = [obj1, obj2, ...] -> objX = [R, G, B]
     # POSITION : positionObjets = [obj1, obj2, ...] -> objX = [posX, posY]
     return([formeObjets, colorObjets, positionObjets, nbObjets])
+
 #carac_obj()
 

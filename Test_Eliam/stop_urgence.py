@@ -2,6 +2,10 @@ import asyncio
 from bleak import BleakClient
 import threading
 
+# Fonction arrêt (non implémenté)
+# Fonctionnement :
+#   Si le robot se déconnecte pour une raison inconnue, le programme se reconnecte et stop tout mouvement du robot
+
 HM10_ADDRESS = "D8:A9:8B:C4:5F:EC"
 UART_CHAR_UUID = "0000ffe1-0000-1000-8000-00805f9b34fb"
 
