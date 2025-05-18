@@ -599,7 +599,7 @@ def cmd_test():                             # Commande de test lors de la créat
 # Variables Globales Obligatoires
 langue = "FR"
 last_menu = "main"
-path_img = "Test_Eliam/images_IHM/"
+path_img = "images_IHM/"
 cac = [[],[],[],0]
 
 # Début du programme
